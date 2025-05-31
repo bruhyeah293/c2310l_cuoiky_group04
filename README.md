@@ -62,3 +62,39 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+# Hướng dẫn cài đặt hệ thống
+
+## Yêu cầu hệ thống
+- PHP 8.0+
+- Composer 2.0+
+- MySQL 8.0+ hoặc MariaDB 10.3+
+- Node.js 16+
+- Git
+- DBEAVER hoặc các phần mềm tương tự
+
+## Các bước cài đặt
+
+### 1. Clone dự án
+```bash
+git clone git clone https://oauth2:oauth-key-goes-here@github.com/bruhyeah293/c2310l_cuoiky_group04.git
+cd c2310l_cuoiky_group04
+
+### 2. Thiết lập database
+
+nhớ tạo trước database tên laravel
+mở file eprojects.sql trong dbeaver kết nối với localhost và chạy (các phần mềm tương tự )
+có thể dùng import.sql hoặc excute script ( trong tools )
+
+### 3. Cài đặt dependencies với môi trường
+
+```bash
+sh install.sh
+sh deloy.sh
+
+### 4. Chạy server
+
+```cmd
+php artisan serve
+npm run dev
