@@ -7,23 +7,31 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function getlogin() {
+    public function getlogin()
+    {
         if (Auth::check()) {
             return redirect()->route('admin.member.index');
         }
+
         return view('admin.login');
     }
 
-    public function postlogin(Request $request) {
-    // Bỏ qua hoàn toàn Auth::attempt()
-    // Tự động "fake" login luôn
-    $request->session()->regenerate();
+    public function postlogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-    // Có thể gán 1 user giả nếu cần:
-    Auth::loginUsingId(1); // login với user có id=1
+        $credentials = $request->only('email', 'password');
 
-    return redirect()->route('admin.member.index');
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('admin.member.index');
+        }
+    return redirect()->route('getlogin')->with('error','Email or password is incorrect');
 }
+
 
 
     public function logout () {
