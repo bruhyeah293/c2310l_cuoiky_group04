@@ -6,7 +6,7 @@
 @if ($errors->any())
     <div class="alert alert-danger alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h5><i class="icon fas fa-ban"></i>Error notice</h5>
+        <h5>Error notice</h5>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -47,7 +47,7 @@
                     @endif
                     @endforeach
                     <?php dequy($datas,0) ?>
-            </select>        
+            </select>
             <label for="exampleInputEmail1">Product Name</label>
             <input type="text" name="name" class="form-control" placeholder="Vui lòng nhập tên sản phẩm" value="{{old('name')}}">
             <label for="exampleInputEmail1">Product Price</label>

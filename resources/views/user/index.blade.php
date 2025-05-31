@@ -27,7 +27,7 @@
     @include('user.blocks.blogs')
 
     <!-- Newsletter -->
-
+3
     @include('user.blocks.newsletter')
 
     <!-- Footer -->

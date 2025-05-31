@@ -35,15 +35,4 @@ class AdminController extends Controller
         DB::table('cart')->where('id',$id)->update(['status' => 2]);
         return redirect()->route('admin.cart')->with('success','Update Success');
     }
-
-    // public function search(Request $request){
-    //     $output='';
-    //     $products = products::where('price','LIKE','%'.$request->keyword.'%')->get();
-    //     foreach ($products as $product){
-    //         $output .= '
-    //             123
-    //         ';
-    //     }
-    //     return response()->json($output);
-    // }
 }

@@ -13,7 +13,7 @@
 @endif
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Thêm sẳn phẩm</h3>
+        <h3 class="card-title">Edit product</h3>
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                 <i class="fas fa-minus"></i>
@@ -27,7 +27,7 @@
     <form method="post" action="{{route('admin.product.update',$product->id)}}" enctype="multipart/form-data">
         @csrf
     <div class="card-body">
-    <label>Thể loại cha</label>
+    <label>Father category</label>
         <select class="form-control" name="category_id">
             <?php
             $datas = array();
@@ -44,7 +44,7 @@
                 @endif
                 @endforeach
                 <?php dequy($datas,$product->category_id) ?>
-        </select>       
+        </select>
         <label for="exampleInputEmail1">Product Name</label>
         <input type="text" name="name" class="form-control" placeholder="Vui lòng nhập tên sản phẩm" value="{{$product->name}}">
         <label for="exampleInputEmail1">Product Price</label>

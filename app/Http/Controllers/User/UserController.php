@@ -38,6 +38,14 @@ class UserController extends Controller
         $cart = Cart::content();
         return view('user.payment',['cart' => $cart]);
     }
+    public function subscribe(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+        return redirect()->back()->with('success', 'Thank you for subscribing!');
+    }
+
 
     public function uppayment(PaymentRequest $request){
         $carts = Cart::content();
@@ -85,4 +93,9 @@ class UserController extends Controller
         $cart = Cart::content();
         return view('user.categories',['products' => $data],['cart' => $cart]);
     }
+    public function contactPost(Request $request)
+    {
+        return redirect()->back()->with('success', 'Thank you for contacting us!');
+    }
+
 }

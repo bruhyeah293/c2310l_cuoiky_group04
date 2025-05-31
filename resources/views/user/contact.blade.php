@@ -95,7 +95,8 @@
                 <div class="get_in_touch_contents">
                     <h1>Get In Touch With Us!</h1>
                     <p>Fill out the form below to recieve a free and confidential.</p>
-                    <form action="post">
+                    <form action="{{ route('user.contact.post') }}" method="post">
+                        @csrf
                         <div>
                             <input id="input_name" class="form_input input_name input_ph" type="text" name="name" placeholder="Name" required="required" data-error="Name is required.">
                             <input id="input_email" class="form_input input_email input_ph" type="email" name="email" placeholder="Email" required="required" data-error="Valid email is required.">
@@ -105,6 +106,11 @@
                         <div>
                             <button id="review_submit" type="submit" class="red_button message_submit_btn trans_300" value="Submit">send message</button>
                         </div>
+                        @if(session('success'))
+                            <script>
+                                alert("{{ session('success') }}");
+                            </script>
+                        @endif
                     </form>
                 </div>
             </div>

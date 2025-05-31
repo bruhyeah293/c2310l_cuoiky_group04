@@ -16,12 +16,12 @@
 		  jQuery(this).closest('.small-graph-box').fadeOut(200);
 		  return false;
 	   });
-	   
+
 	    //CHARTS
 	    function gd(year, day, month) {
 			return new Date(year, month - 1, day).getTime();
 		}
-		
+
 		graphArea2 = Morris.Area({
 			element: 'hero-area',
 			padding: 10,
@@ -44,7 +44,7 @@
 				{period: '2016 Q3', iphone: 4830, ipad: 3805, itouch: 1598},
 				{period: '2016 Q4', iphone: 15083, ipad: 8977, itouch: 5185},
 				{period: '2017 Q1', iphone: 10697, ipad: 4470, itouch: 2038},
-			
+
 			],
 			lineColors:['#eb6f6f','#926383','#eb6f6f'],
 			xkey: 'period',
@@ -55,8 +55,8 @@
 			hideHover: 'auto',
 			resize: true
 		});
-		
-	   
+
+
 	});
 	</script>
 <!-- calendar -->
@@ -72,12 +72,12 @@
 		  jQuery(this).closest('.small-graph-box').fadeOut(200);
 		  return false;
 	   });
-	   
+
 	    //CHARTS
 	    function gd(year, day, month) {
 			return new Date(year, month - 1, day).getTime();
 		}
-		
+
 		graphArea2 = Morris.Area({
 			element: 'hero-area',
 			padding: 10,
@@ -100,7 +100,7 @@
 				{period: '2016 Q3', iphone: 4830, ipad: 3805, itouch: 1598},
 				{period: '2016 Q4', iphone: 15083, ipad: 8977, itouch: 5185},
 				{period: '2017 Q1', iphone: 10697, ipad: 4470, itouch: 2038},
-			
+
 			],
 			lineColors:['#eb6f6f','#926383','#eb6f6f'],
 			xkey: 'period',
@@ -111,8 +111,8 @@
 			hideHover: 'auto',
 			resize: true
 		});
-		
-	   
+
+
 	});
 	</script>
 <!-- calendar -->
@@ -122,7 +122,7 @@
 
 			$('#mycalendar').monthly({
 				mode: 'event',
-				
+
 			});
 
 			$('#mycalendar2').monthly({
@@ -152,7 +152,7 @@
 
 			$('#mycalendar').monthly({
 				mode: 'event',
-				
+
 			});
 
 			$('#mycalendar2').monthly({

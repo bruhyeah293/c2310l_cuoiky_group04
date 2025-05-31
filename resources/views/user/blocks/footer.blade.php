@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="footer_nav_container">
-                    <div class="cr">©2025 eProject. Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#">Cyber Team</a></div>
+                    <div class="cr">©2025 eProject. Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#">Group 04</a></div>
                 </div>
             </div>
         </div>

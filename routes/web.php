@@ -25,6 +25,7 @@ Route::get('/',[HomeController::class,'index'])->name('index');
 Route::get('addToCard/{id}',[HomeController::class,'addToCart'])->name('addToCart');
 Route::get('cart',[HomeController::class,'cart'])->name('cart');
 Route::get('xoa san-pham-gio-hang/{id}',[HomeController::class,'deleteCart'])->name('deleteCart');
+Route::post('/newsletter/subscribe', [UserController::class, 'subscribe'])->name('newsletter.subscribe');
 
 
 Route::get('login',[LoginController::class,'getlogin'])->name('getlogin');
@@ -89,6 +90,7 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('/',[UserController::class , 'index'])->name('index');
     Route::get('index',[UserController::class , 'index'])->name('index');
     Route::get('contact',[UserController::class , 'contact'])->name('contact');
+    Route::post('contact', [UserController::class, 'contactPost'])->name('contact.post');
     Route::get('categories',[UserController::class , 'categories'])->name('categories');
     Route::get('single/{id}',[UserController::class , 'single'])->name('single');
     Route::get('payment',[UserController::class , 'payment'])->name('payment');

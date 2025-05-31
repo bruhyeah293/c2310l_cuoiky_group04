@@ -1,7 +1,7 @@
 <!--logo start-->
 <div class="brand">
     <a href="{{ route('admin.member.index') }}" class="logo">
-        Cyber
+        GROUP04
     </a>
     <div class="sidebar-toggle-box">
         <div class="fa fa-bars"></div>
@@ -89,7 +89,7 @@
                 </li>
                 <li>
                     <a href="#">
-                        <span class="photo"><img alt="avatar" src="{{ asset('admin/assets/images/3.png') }}"></span>
+                        {{-- <span class="photo"><img alt="avatar" src="{{ asset('admin/assets/images/3.png') }}"></span> --}}
                                 <span class="subject">
                                 <span class="from">Jonathan Smith</span>
                                 <span class="time">Just now</span>
@@ -101,7 +101,7 @@
                 </li>
                 <li>
                     <a href="#">
-                        <span class="photo"><img alt="avatar" src="{{ asset('admin/assets/images/1.png') }}"></span>
+                        {{-- <span class="photo"><img alt="avatar" src="{{ asset('admin/assets/images/1.png') }}"></span> --}}
                                 <span class="subject">
                                 <span class="from">Jane Doe</span>
                                 <span class="time">2 min ago</span>
@@ -113,7 +113,7 @@
                 </li>
                 <li>
                     <a href="#">
-                        <span class="photo"><img alt="avatar" src="{{ asset('admin/assets/images/3.png') }}"></span>
+                        {{-- <span class="photo"><img alt="avatar" src="{{ asset('admin/assets/images/3.png') }}"></span> --}}
                                 <span class="subject">
                                 <span class="from">Tasi sam</span>
                                 <span class="time">2 days ago</span>
@@ -125,7 +125,7 @@
                 </li>
                 <li>
                     <a href="#">
-                        <span class="photo"><img alt="avatar" src="{{ asset('admin/assets/images/2.png') }}"></span>
+                        {{-- <span class="photo"><img alt="avatar" src="{{ asset('admin/assets/images/2.png') }}"></span> --}}
                                 <span class="subject">
                                 <span class="from">Mr. Perfect</span>
                                 <span class="time">2 hour ago</span>
@@ -199,7 +199,7 @@
             </ul>
         </li>
         <!-- user login dropdown end -->
-       
+
     </ul>
     <!--search & user info end-->
 </div>

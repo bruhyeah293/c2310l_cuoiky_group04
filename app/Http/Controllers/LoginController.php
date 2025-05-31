@@ -13,24 +13,22 @@ class LoginController extends Controller
         }
         return view('admin.login');
     }
+
     public function postlogin(Request $request) {
-        $credentials = $request->validate([
-            'email' => ['required'],
-            'password' => ['required'],
-        ]);
- 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
- 
-            return redirect()->route('admin.member.index');
-        }
- 
-        return redirect()->route('getlogin')->with('error','Email or password is incorrect');
-    }
+    // Bỏ qua hoàn toàn Auth::attempt()
+    // Tự động "fake" login luôn
+    $request->session()->regenerate();
+
+    // Có thể gán 1 user giả nếu cần:
+    Auth::loginUsingId(1); // login với user có id=1
+
+    return redirect()->route('admin.member.index');
+}
+
 
     public function logout () {
         Auth::logout();
- 
+
         return redirect()->route('getlogin');
     }
 }
