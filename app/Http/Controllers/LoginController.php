@@ -29,6 +29,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
             return redirect()->route('admin.member.index');
         }
+        // If authentication fails, redirect back with an error message
     return redirect()->route('getlogin')->with('error','Email or password is incorrect');
 }
 
