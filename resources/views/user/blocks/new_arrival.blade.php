@@ -39,6 +39,14 @@
                                 <div class="product_price">${{$product->price}}<span></span></div>
                             </div>
                         </div>
+                        <div class="red_button add_to_cart_button">
+                                @if(auth()->check())
+                                    <a href="{{ route('addToCart',['id'=> $product->id]) }}">add to cart</a>
+                                @else
+                                    <a href="{{ route('login') }}" onclick="return confirm('Bạn cần đăng nhập để thêm vào giỏ hàng!');">add to cart</a>
+                                @endif
+                            </div>
+
                         <div class="red_button add_to_cart_button"><a href="{{ route('addToCart',['id'=> $product->id]) }}">add to cart</a></div>
                     </div>
                     @endforeach

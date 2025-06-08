@@ -49,6 +49,8 @@
         <input type="text" name="name" class="form-control" placeholder="Vui lòng nhập tên sản phẩm" value="{{$product->name}}">
         <label for="exampleInputEmail1">Product Price</label>
         <input type="text" name="price" class="form-control"  placeholder="Vui lòng nhập giá sản phẩm" value="{{$product->price}}">
+        <label for="exampleInputEmail1">Product Quantity</label>
+        <input type="text" name="quantity" class="form-control"  placeholder="Vui lòng nhập số lượng sản phẩm" value="{{$product->quantity}}">
         <label for="exampleInputEmail1">Synopsis</label>
         <textarea name="intro" class="form-control">{{$product->intro}}</textarea>
         <label for="exampleInputEmail1">Content</label>

@@ -52,6 +52,8 @@
             <input type="text" name="name" class="form-control" placeholder="Vui lòng nhập tên sản phẩm" value="{{old('name')}}">
             <label for="exampleInputEmail1">Product Price</label>
             <input type="text" name="price" class="form-control"  placeholder="Vui lòng nhập giá sản phẩm" value="{{old('price')}}">
+            <label for="exampleInputEmail1">Product Quantity</label>
+            <input type="number" name="quantity" class="form-control" placeholder="Nhập số lượng sản phẩm" value="{{ old('quantity') }}" min="1">
             <label for="exampleInputEmail1">Synopsis</label>
             <textarea name="intro" class="form-control">{{old('intro')}}</textarea>
             {{-- <script>CKEDITOR.replace('intro')</script> --}}

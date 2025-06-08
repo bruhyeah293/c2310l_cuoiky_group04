@@ -61,15 +61,33 @@
                             <li><a href="{{ route('user.contact') }}">contact</a></li>
                         </ul>
                         <ul class="navbar_user">
-                            {{-- <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li> --}}
-                            <li class="checkout">
-                                <a href="{{ route('cart') }}">
-                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                    <span id="checkout_items" class="checkout_items">{{$cart->count()}}</span>
-                                </a>
-                            </li>
-                        </ul>
+                                <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+                                <li class="checkout">
+                                    <a href="{{ route('cart') }}">
+                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                        <span id="checkout_items" class="checkout_items">{{$cart->count()}}</span>
+                                    </a>
+                                </li>
+
+                                {{-- <li style="margin-left: 20px;"><a href="{{ url('/login') }}"><i class="fa fa-user" aria-hidden="true"></i> Login</a></li> --}}
+                               @guest
+    <li style="margin-left: 20px;"><a href="{{ url('/login') }}"><i class="fa fa-user" aria-hidden="true"></i> Login</a></li>
+@endguest
+
+@auth
+    <li style="margin-left: 20px; white-space: nowrap;" class="dropdown">
+    <a href="#" class="dropdown-toggle d-inline-flex align-items-center" data-toggle="dropdown" style="white-space: nowrap;">
+        <i class="fa fa-user" aria-hidden="true" style="margin-right: 5px;"></i>
+        <span>{{ Auth::user()->email }}</span>
+    </a>
+    <ul class="dropdown-menu text-center">
+        <li><a href="{{ route('logout') }}">Logout</a></li>
+    </ul>
+</li>
+@endauth
+
+
+                            </ul>
                         <div class="hamburger_container">
                             <i class="fa fa-bars" aria-hidden="true"></i>
                         </div>

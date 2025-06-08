@@ -152,13 +152,14 @@
 									<img src="{{$image_url}}" alt="" width="200" height="auto">
 								</div>
 								<div class="tab_text_block">
-									<h2>Watch</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque aliquid tenetur eaque! Fugit molestias sapiente consequatur at nam impedit! Ratione ex autem, nesciunt repellendus expedita consequuntur aspernatur corrupti saepe. Doloremque.</p>
+									<h2>Information</h2>
+                                    <p>Welcome Air Conditioners are designed to provide optimal comfort and efficiency in your home or office. With advanced technology and sleek designs, our air conditioners ensure a cool and refreshing environment even during the hottest days. Whether you need a window unit, split system, or portable air conditioner, we have the perfect solution for your cooling needs.</p>
+
 								</div>
 								<div class="tab_image desc_last">
 									@php
-										$img= $product->image == NULL ? 'noimg.png' : $product->image;
-										$image_url= asset('images/'.$img)
+										// $img= $product->image == NULL ? 'noimg.png' : $product->image;
+										// $image_url= asset('images/'.$img)
 									@endphp
 									<img src="{{$image_url}}" alt="" width="200" height="auto">
 								</div>

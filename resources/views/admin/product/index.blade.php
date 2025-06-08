@@ -21,6 +21,7 @@
                 <th>Name Product</th>
                 <th>Category</th>
                 <th>Price</th>
+                <th>Quantity</th>
                 <th>Status</th> 
                 <th>Outstanding</th>
                 <th>Edit</th>
@@ -40,6 +41,7 @@
                 <td>{{ $product->name}}</td>
                 <td>{{ $product->cname}}</td>
                 <td>{{ $product->price}}</td>
+                <td>{{ $product->quantity}}</td>
                 <td>
                   @if ($product->status ==0)
                      <strong>Hidden</strong> 
