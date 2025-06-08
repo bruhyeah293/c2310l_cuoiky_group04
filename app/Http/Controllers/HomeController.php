@@ -15,11 +15,25 @@ class HomeController extends Controller
         return view('user.index',['products' => $data],['cart' => $cart]);
     }
 
+    // public function addToCart($id){
+    //     $products = DB::table('products')->where('id',$id)->first();
+    //     Cart::add($id,$products->name, 1,$products->price);
+    //     return redirect()->route('cart')->with('success', 'Add to Cart successfully');
+    // }
     public function addToCart($id){
-        $products = DB::table('products')->where('id',$id)->first();
-        Cart::add($id,$products->name, 1,$products->price);
-        return redirect()->route('cart')->with('success', 'Add to Cart successfully');
+    if (!auth()->check()) {
+        return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!');
     }
+
+    $products = DB::table('products')->where('id', $id)->first();
+    if ($products) {
+        Cart::add($id, $products->name, 1, $products->price);
+        return redirect()->route('cart')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
+    }
+
+    return redirect()->route('cart')->with('error', 'Sản phẩm không tồn tại!');
+}
+
 
     public function cart(){
         $cart = Cart::content();

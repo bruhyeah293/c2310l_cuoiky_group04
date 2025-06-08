@@ -22,16 +22,23 @@ use App\Http\Controllers\User\UserController;
 */
 
 Route::get('/',[HomeController::class,'index'])->name('index');
-Route::get('addToCard/{id}',[HomeController::class,'addToCart'])->name('addToCart');
+// Route::get('addToCard/{id}',[HomeController::class,'addToCart'])->name('addToCart');
+Route::middleware('auth')->group(function () {
+    Route::get('addToCard/{id}', [HomeController::class,'addToCart'])->name('addToCart');
+
+
+    Route::get('cart',[HomeController::class,'cart'])->name('cart');
+    Route::get('xoa san-pham-gio-hang/{id}',[HomeController::class,'deleteCart'])->name('deleteCart');
+});
+
 Route::get('cart',[HomeController::class,'cart'])->name('cart');
 Route::get('xoa san-pham-gio-hang/{id}',[HomeController::class,'deleteCart'])->name('deleteCart');
 Route::post('/newsletter/subscribe', [UserController::class, 'subscribe'])->name('newsletter.subscribe');
 
 
-Route::get('login',[LoginController::class,'getlogin'])->name('getlogin');
-Route::post('login',[LoginController::class,'postlogin'])->name('postlogin');
-Route::get('logout',[LoginController::class,'logout'])->name('logout');
-
+Route::get('/login', [LoginController::class, 'getlogin'])->name('login');
+Route::post('/login', [LoginController::class, 'postlogin'])->name('postlogin');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->middleware('login')->name('admin.')->group(function () {
     Route::get('dashboard',[AdminController::class,'dashboard'])->name('dashboard');
@@ -61,7 +68,7 @@ Route::prefix('admin')->middleware('login')->name('admin.')->group(function () {
         Route::get('edit/{id}',[ProductController::class,'edit'])->name('edit')->where('id','[0-9]+');
         Route::post('update/{id}',[ProductController::class,'update'])->name('update')->where('id','[0-9]+');
         //Delete product
-        Route::get('delete/{id}',[ProductController::class,'delete'])->name('delete')->where('id','[0-9]+');
+        Route::get('jejedelete/{id}',[ProductController::class,'delete'])->name('delete')->where('id','[0-9]+');
     });
 
     Route::prefix('category')->name('category.')->group(function(){

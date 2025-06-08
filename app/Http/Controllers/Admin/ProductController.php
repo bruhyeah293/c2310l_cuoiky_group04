@@ -13,12 +13,12 @@ class ProductController extends Controller
     public function index(){
         $result = DB::table('category')
             ->join('products','products.category_id','=','category.id')
-            ->select('category.name as cname','products.image','products.name','products.price','products.intro','products.status','products.featured','products.id')
+            ->select('category.name as cname','products.image','products.name','products.price','products.quantity','products.intro','products.status','products.featured','products.id')
             ->paginate(5);
         if ($keyc = request()->keyc){
             $result = DB::table('category')
             ->join('products','products.category_id','=','category.id')
-            ->select('category.name as cname','products.image','products.name','products.price','products.intro','products.status','products.featured','products.id')
+            ->select('category.name as cname','products.image','products.name','products.price','products.quantity','products.intro','products.status','products.featured','products.id')
             ->where('products.name','LIKE', '%'.$keyc.'%','or', 'price','LIKE', '%'.$keyc.'%')
             ->paginate(100);
         }

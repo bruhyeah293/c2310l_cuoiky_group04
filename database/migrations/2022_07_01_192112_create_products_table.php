@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('category_id');
             $table->string('name');
             $table->integer('price');
+            $table->integer('quantity')->default(1);
             $table->text('intro');
             $table->text('content')->nullable();
             $table->string('image');

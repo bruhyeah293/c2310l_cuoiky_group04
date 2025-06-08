@@ -7,14 +7,9 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function getlogin()
-    {
-        if (Auth::check()) {
-            return redirect()->route('admin.member.index');
-        }
-
-        return view('admin.login');
-    }
+    public function getlogin() {
+    return view('auth.login'); // Hiển thị trang đăng nhập
+}
 
     public function postlogin(Request $request)
     {
@@ -27,10 +22,19 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('admin.member.index');
+
+            if (Auth::user()->level == 1) {
+                return redirect()->route('admin.member.index');
+            } elseif (Auth::user()->level == 2) {
+                return redirect()->route('index');
+            }
+
+            Auth::logout();
+            return redirect()->route('getlogin')->with('error', 'Unauthorized user level.');
         }
-    return redirect()->route('getlogin')->with('error','Email or password is incorrect');
-}
+
+        return redirect()->route('getlogin')->with('error', 'Email or password is incorrect');
+    }
 
 
 
