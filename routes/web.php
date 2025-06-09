@@ -22,9 +22,8 @@ use App\Http\Controllers\User\UserController;
 */
 
 Route::get('/',[HomeController::class,'index'])->name('index');
-// Route::get('addToCard/{id}',[HomeController::class,'addToCart'])->name('addToCart');
 Route::middleware('auth')->group(function () {
-    Route::post('addToCard/{id}', [HomeController::class, 'addToCart'])->name('addToCart');
+    Route::post('addToCart/{id}', [HomeController::class, 'addToCart'])->name('addToCart');
 
 
 
