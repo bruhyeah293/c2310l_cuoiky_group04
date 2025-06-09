@@ -17,14 +17,15 @@ use App\Http\Controllers\User\UserController;
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| contains the "web" mid dleware group. Now create something great!
 |
 */
 
 Route::get('/',[HomeController::class,'index'])->name('index');
 // Route::get('addToCard/{id}',[HomeController::class,'addToCart'])->name('addToCart');
 Route::middleware('auth')->group(function () {
-    Route::get('addToCard/{id}', [HomeController::class,'addToCart'])->name('addToCart');
+    Route::post('addToCard/{id}', [HomeController::class, 'addToCart'])->name('addToCart');
+
 
 
     Route::get('cart',[HomeController::class,'cart'])->name('cart');

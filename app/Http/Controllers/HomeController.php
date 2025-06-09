@@ -15,24 +15,33 @@ class HomeController extends Controller
         return view('user.index',['products' => $data],['cart' => $cart]);
     }
 
-    // public function addToCart($id){
-    //     $products = DB::table('products')->where('id',$id)->first();
-    //     Cart::add($id,$products->name, 1,$products->price);
-    //     return redirect()->route('cart')->with('success', 'Add to Cart successfully');
-    // }
-    public function addToCart($id){
-    if (!auth()->check()) {
-        return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!');
-    }
+        public function addToCart(Request $request, $id)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!');
+        }
 
-    $products = DB::table('products')->where('id', $id)->first();
-    if ($products) {
-        Cart::add($id, $products->name, 1, $products->price);
+        $product = DB::table('products')->where('id', $id)->first();
+
+        if (!$product) {
+            return redirect()->route('cart')->with('error', 'Sản phẩm không tồn tại!');
+        }
+
+        $quantity = max(1, (int) $request->input('quantity', 1));
+
+        Cart::add([
+            'id'      => $id,
+            'name'    => $product->name,
+            'qty'     => $quantity,
+            'price'   => $product->price,
+            'weight'  => 0,
+        ]);
+
+
         return redirect()->route('cart')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
 
-    return redirect()->route('cart')->with('error', 'Sản phẩm không tồn tại!');
-}
+
 
 
     public function cart(){
