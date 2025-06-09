@@ -1,18 +1,4 @@
 <style>
-    #mainSlider .carousel-inner {
-        max-height: 600px; /* bạn có thể thay đổi chiều cao tùy ý */
-        overflow: hidden;
-    }
-
-    #mainSlider .carousel-item img {
-        object-fit: cover;
-        height: 600px; /* giống với max-height ở trên */
-        width: 100%;
-    }
-
-    .carousel-caption {
-        bottom: 20%;
-    }
     header {
         position: fixed;
         top: 0;
@@ -26,13 +12,14 @@
     }
 
     #mainSlider .carousel-inner {
-        max-height: none;
+        max-height: 600px;
+        overflow: hidden;
     }
 
     #mainSlider .carousel-item img {
         width: 100%;
-        height: auto;
-        object-fit: contain;
+        height: 600px;
+        object-fit: cover;
     }
 
     .carousel-caption {
@@ -42,11 +29,11 @@
 
     .carousel-caption h1,
     .carousel-caption h6 {
-        text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     }
 </style>
 
-<div id="mainSlider" class="carousel slide" data-ride="carousel" data-interval="3000">
+<div id="mainSlider" class="carousel slide" data-ride="carousel" data-interval="2000">
     <div class="carousel-inner">
         <div class="carousel-item active">
             <img src="{{ asset('user/assets/images/background1.jpg') }}" class="d-block w-100" alt="Image 1">

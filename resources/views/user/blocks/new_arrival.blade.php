@@ -33,7 +33,6 @@
                                 <img src="{{$image_url}}" alt="" width="200" height="200">
                             </div>
                             <div class="favorite favorite_left"></div>
-                            <!-- <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div> -->
                             <div class="product_info">
                                 <h6 class="product_name"><a href="{{ route('user.single', $product->id)}}">{{$product->name}}</a></h6>
                                 <div class="product_price">${{$product->price}}<span></span></div>
@@ -41,13 +40,14 @@
                         </div>
                         <div class="red_button add_to_cart_button">
                                 @if(auth()->check())
-                                    <a href="{{ route('addToCart',['id'=> $product->id]) }}">add to cart</a>
+                                        <form action="{{ route('addToCart', ['id' => $product->id]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">Add to Cart</button>
+                                    </form>
                                 @else
                                     <a href="{{ route('login') }}" onclick="return confirm('Bạn cần đăng nhập để thêm vào giỏ hàng!');">add to cart</a>
                                 @endif
                             </div>
-
-                        <div class="red_button add_to_cart_button"><a href="{{ route('addToCart',['id'=> $product->id]) }}">add to cart</a></div>
                     </div>
                     @endforeach
                 </div>
