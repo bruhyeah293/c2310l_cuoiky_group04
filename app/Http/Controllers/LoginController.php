@@ -30,10 +30,10 @@ class LoginController extends Controller
             }
 
             Auth::logout();
-            return redirect()->route('getlogin')->with('error', 'Unauthorized user level.');
+            return redirect()->route('postlogin')->with('error', 'Unauthorized user level.');
         }
 
-        return redirect()->route('getlogin')->with('error', 'Email or password is incorrect');
+        return redirect()->route('postlogin')->with('error', 'Email or password is incorrect');
     }
 
 

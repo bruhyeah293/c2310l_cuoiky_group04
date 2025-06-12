@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\UserController;
 
 
@@ -20,6 +22,12 @@ use App\Http\Controllers\User\UserController;
 | contains the "web" mid dleware group. Now create something great!
 |
 */
+
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/review/form', [ReviewController::class, 'create'])->name('review.form');
+Route::post('/review/submit', [ReviewController::class, 'store'])->name('review.submit');
+Route::get('/reviews', [UserController::class, 'allReviews'])->name('user.reviews');
+
 
 Route::get('/',[HomeController::class,'index'])->name('index');
 Route::middleware('auth')->group(function () {

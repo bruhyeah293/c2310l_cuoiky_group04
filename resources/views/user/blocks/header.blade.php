@@ -1,3 +1,18 @@
+<style>
+    .navbar_user li a {
+        color: black;
+        text-decoration: none;
+        padding: 2px 6px; /* cho hiệu ứng đẹp hơn */
+        transition: box-shadow 0.3s ease;
+        border-radius: 4px; /* bo góc nhẹ cho viền */
+    }
+
+    .navbar_user li a:hover {
+        box-shadow: 0 0 5px 2px #007bff;
+        color: black; /* chữ vẫn đen */
+    }
+</style>
+
 <header class="header trans_300">
     <!-- Top Navigation -->
 
@@ -10,19 +25,6 @@
                 <div class="col-md-6 text-right">
                     <div class="top_nav_right">
                         <ul class="top_nav_menu">
-
-                            <!-- Currency / Language / My Account -->
-                            {{-- <li class="account">
-                                <a href="#">
-                                    My Account
-                                    <i class="fa fa-angle-down"></i>
-                                </a>
-                                <ul class="account_selection">
-                                    <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                                    <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-                                </ul>
-                            </li> --}}
-
                             @if (Session::has('success'))
                             <div class="alert alert-success alert-block" style="text-align: center">
                                 <button type="button" class="close" data-dismiss="alert">×</button>
@@ -59,35 +61,41 @@
                             <li><a href="{{route('user.data_category', 3)}}">for home</a></li>
                             <li><a href="{{route('user.data_category', 5)}}">for industry </a></li>
                             <li><a href="{{ route('user.contact') }}">contact</a></li>
+                            <li><a href="{{ route('user.reviews') }}">reviews</a></li>
                         </ul>
                         <ul class="navbar_user">
-                                <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                                <li class="checkout">
-                                    <a href="{{ route('cart') }}">
-                                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                        <span id="checkout_items" class="checkout_items">{{$cart->count()}}</span>
-                                    </a>
-                                </li>
+                            {{-- <li>
+                                <form action="{{ route('search') }}" method="GET" style="display:inline;">
+                                    <button type="submit" style="background:none; border:none; cursor:pointer; color:black;">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </button>
+                                    <input type="text" name="query" placeholder="Search..." style="border:none; outline:none;" />
+                                </form>
+                            </li> --}}
+                            <li class="checkout" style="margin-right: 20px;">
+                                <a href="{{ route('cart') }}">
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                    <span id="checkout_items" class="checkout_items">{{$cart->count()}}</span>
+                                </a>
+                            </li>
 
-                                {{-- <li style="margin-left: 20px;"><a href="{{ url('/login') }}"><i class="fa fa-user" aria-hidden="true"></i> Login</a></li> --}}
-                               @guest
-    <li style="margin-left: 20px;"><a href="{{ url('/login') }}"><i class="fa fa-user" aria-hidden="true"></i> Login</a></li>
-@endguest
+                            @guest
+                            <li style="margin-left: 20px;">
+                                <a href="{{ url('/login') }}">Login</a>
+                            </li>
+                            @endguest
 
-@auth
-    <li style="margin-left: 20px; white-space: nowrap;" class="dropdown">
-    <a href="#" class="dropdown-toggle d-inline-flex align-items-center" data-toggle="dropdown" style="white-space: nowrap;">
-        <i class="fa fa-user" aria-hidden="true" style="margin-right: 5px;"></i>
-        <span>{{ Auth::user()->email }}</span>
-    </a>
-    <ul class="dropdown-menu text-center">
-        <li><a href="{{ route('logout') }}">Logout</a></li>
-    </ul>
-</li>
-@endauth
-
-
-                            </ul>
+                            @auth
+                            <li style="margin-left: 30px; white-space: nowrap;" class="dropdown">
+                                <a href="#" class="dropdown-toggle d-inline-flex align-items-center" data-toggle="dropdown" style="white-space: nowrap;">
+                                    <span style="margin-left: 10px;">{{ Auth::user()->email }}</span>
+                                </a>
+                                <ul class="dropdown-menu text-center">
+                                    <li><a href="{{ route('logout') }}">Logout</a></li>
+                                </ul>
+                            </li>
+                            @endauth
+                        </ul>
                         <div class="hamburger_container">
                             <i class="fa fa-bars" aria-hidden="true"></i>
                         </div>

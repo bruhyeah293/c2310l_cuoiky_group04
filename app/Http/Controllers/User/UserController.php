@@ -48,40 +48,49 @@ class UserController extends Controller
 
 
     public function uppayment(PaymentRequest $request){
-        $carts = Cart::content();
-        // $quantityss[] = $request->qty;
-        // foreach($quantityss as $quantitys){
-        //     foreach($quantitys as $quantity){
-        //         foreach ($carts as $cart){
-        //             $data['product_id'] = $cart->id;
-        //             $data['qty'] = $quantity;
-        //             $data['name'] = $request->name;
-        //             $data['address'] = $request->address;
-        //             $data['phone'] = $request->phone;
-        //             $data['email'] = $request->email;
-        //             $data['national'] = $request->national;
-        //             $data['created_at'] = new \DateTime();
-        //             DB::table('cart')->insert($data);
-        //         }
-        //     }
-        // }
+    $carts = Cart::content();
 
-        foreach ($carts as $cart){
-            $data['product_id'] = $cart->id;
-            $data['qty'] = $cart->qty;
-            $data['name'] = $request->name;
-            $data['address'] = $request->address;
-            $data['phone'] = $request->phone;
-            $data['email'] = $request->email;
-            $data['national'] = $request->national;
-            $data['created_at'] = new \DateTime();
-            $data['status'] = 0;
-            $data['total'] = $cart->total;
-            DB::table('cart')->insert($data);
-        }
-        $carts = Cart::destroy();
-        return redirect()->route('index')->with('success','Order Success');
+    foreach ($carts as $cart){
+        $data = [
+            'product_id' => $cart->id,
+            'qty'        => $cart->qty,
+            'name'       => $request->name,
+            'address'    => $request->address,
+            'phone'      => $request->phone,
+            'email'      => $request->email,
+            'national'   => $request->national,
+            'created_at' => now(),
+            'status'     => 0,
+            'total'      => $cart->total,
+        ];
+
+        DB::table('cart')->insert($data);
     }
+
+    $firstProductId = $carts->first()->id ?? null;
+
+    Cart::destroy();
+
+    if ($firstProductId) {
+        return redirect()->route('review.form', ['product_id' => $firstProductId])
+        ->with('success','Order Success! Write your review or press Cancel to return to home');
+    }
+
+    return redirect()->route('index')->with('success','Order Success');
+}
+
+    public function allReviews()
+{
+    $reviews = DB::table('reviews')
+        ->join('products', 'reviews.product_id', '=', 'products.id')
+        ->select('reviews.content', 'reviews.product_id', 'products.name')
+        ->get();
+
+    $cart = Cart::content();
+    return view('user.reviews', compact('reviews', 'cart'));
+}
+
+
 
     public function push($request){
         $data = $request;
