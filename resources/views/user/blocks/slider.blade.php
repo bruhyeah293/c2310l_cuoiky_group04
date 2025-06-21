@@ -33,7 +33,7 @@
     }
 </style>
 
-<div id="mainSlider" class="carousel slide" data-ride="carousel" data-interval="2000">
+<div id="mainSlider" class="carousel slide" data-ride="carousel" data-interval="3000">
     <div class="carousel-inner">
         <div class="carousel-item active">
             <img src="{{ asset('user/assets/images/background1.jpg') }}" class="d-block w-100" alt="Image 1">

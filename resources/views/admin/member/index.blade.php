@@ -30,7 +30,16 @@
                     <td>{{ $member->email }}</td>
                     <td>@if ($member->id==1) SuperAdmin @elseif($member->level==1) Admin @else Member @endif</td>
                     <td><a href="{{route('admin.member.edit', $member->id)}}">Sửa</a></td>
-                    <td><a onclick="return confirmDelete()" href="{{route('admin.member.delete', $member->id)}}">Xóa</a></td>
+                    <td>
+                        <form action="{{ route('admin.member.delete', $member->id) }}"
+                            method="POST"
+                            style="display:inline"
+                            onsubmit="return confirm('Bạn có chắc muốn xóa không?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-link text-danger p-0">Xóa</button>
+                        </form>
+                    </td>
                 </tr>
                 @empty
                 <tr><td colspan="5" align="center">No Data</td></tr>
@@ -42,7 +51,7 @@
         <div class="row">
             <div class="col-sm-5 text-center">
                 {{-- <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small> --}}
-            </div> 
+            </div>
             <div class="col-sm-7 text-right text-center-xs">
                 <ul class="pagination pagination-sm m-t-none m-b-none">
                     {{-- <li>

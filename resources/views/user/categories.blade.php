@@ -188,7 +188,7 @@
 												<div class="product_price">${{$product->price}}</div>
 											</div>
 										</div>
-										<div class="red_button add_to_cart_button"><a href="{{ route('addToCart',['id'=> $product->id]) }}">add to cart</a></div>
+										<div class="red_button add_to_cart_button"><a href="{{ route('user.addToCart',['id'=> $product->id]) }}">add to cart</a></div>
 									</div>
                                     @endforeach
 							</div>

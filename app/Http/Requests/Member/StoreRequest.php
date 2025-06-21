@@ -27,6 +27,7 @@ class StoreRequest extends FormRequest
             'email' => 'required|email|unique:members',
             'password' => 'required|min:6',
             'password_confirmation'=> 'required_with:password|same:password',
+            'level' => 'required|in:1,2'
         ];
     }
     public function messages()

@@ -57,7 +57,7 @@
 
             </div>
         </div>
-        
+
 
         <div class="row">
             <div class="col">
@@ -84,7 +84,7 @@
                                 </td> --}}
                                 <td>{{$item->qty}}</td>
                                 <td>${{number_format($item->price * $item->qty,0,"",".") }}</td>
-                                <td><a href="{{ route('deleteCart',['id' => $item -> rowId]) }}"><i class="fa fa-remove"></i></a></td>
+                                <td><a href="{{ route('user.deleteCart',['id' => $item -> rowId]) }}"><i class="fa fa-remove"></i></a></td>
                             </tr>
                         @endforeach
                         <tr>

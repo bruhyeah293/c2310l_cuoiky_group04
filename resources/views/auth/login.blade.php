@@ -20,7 +20,13 @@
 <body>
 <div class="log-w3">
 <div class="w3layouts-main">
-	<h2>Sign In Now</h2>
+	<h2>Sign In</h2>
+    @if (Session::has('success'))
+        <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{ Session::get('success') }}</strong>
+        </div>
+    @endif
 	@if (Session::has('error'))
 		<div class="alert alert-danger alert-block">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -38,9 +44,7 @@
 <!-- Nút Quay Lại -->
 <div class="text-center mt-3">
     <a href="{{ url('/') }}" class="btn btn-primary">Back to Home</a>
-</div>
-	<p>Do not Have an Account ?<br/>Please contact admin to get an account.<br/><a href="#">info.deercreative@gmail.com</a></p>
-</div>
+<p>Don't have an account? <a href="{{ route('register') }}">Create an account</a></p>
 </div>
 <script src="{{ asset('admin/assets/js/bootstrap.js') }}"></script>
 <script src="{{ asset('admin/assets/js/jquery.dcjqaccordion.2.7.js') }}"></script>

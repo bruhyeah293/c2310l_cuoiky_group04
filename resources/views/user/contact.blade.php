@@ -25,7 +25,7 @@
 
         <!-- Hamburger Menu -->
 
-        @include('user.blocks.banner')
+        {{-- @include('user.blocks.banner') --}}
         <div class="container contact_container">
             <div class="row">
                 <div class="col">

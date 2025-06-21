@@ -3,67 +3,121 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\support\Facades\DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Member\StoreRequest;
 use App\Http\Requests\Member\UpdateRequest;
-use Illuminate\Support\Facades\Auth;
+use DateTime;
 
 class MemberController extends Controller
 {
-    public function index(){
-        $result = DB::table('members')->orderBy('id')->paginate(5);
-        if ($key = request()->key){
-            $result = DB::table('members')->orderBy('id')
-            ->where('email','like','%' . $key . '%')
-            ->paginate(100);
-        }
-        return view('admin.member.index',['members' => $result])->with('i',(request()->input('page',1)-1)*5);
+    protected string $guard;
+
+    public function __construct()
+    {
+        // Guard được middleware lưu trong session. Fallback về 'member' nếu chưa có.
+        $this->guard = session('guard', 'member');
     }
-    
-    public function create(){
+
+    /* ---------------- LIST ---------------- */
+    public function index()
+    {
+        $query = DB::table('members')->orderBy('id');
+
+        if ($key = request()->key) {
+            $query->where('email', 'like', "%$key%");
+        }
+
+        $members = $query->paginate(5);
+
+        return view('admin.member.index', compact('members'))
+               ->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    /* ---------------- CREATE & STORE ---------------- */
+    public function create()
+    {
         return view('admin.member.create');
     }
-    
-    public function store(StoreRequest $request){
-        $data = $request->except('_token','password_confirmation');
-        $data['password'] = bcrypt($data['password']);
-        $data['created_at'] = new \DateTime();
+
+    public function store(StoreRequest $request)
+    {
+        $data = $request->validated();
+
+        unset($data['password_confirmation']);
+
+        $data['password']   = bcrypt($data['password']);
+        $data['created_at'] = new DateTime();
+
         DB::table('members')->insert($data);
-        return redirect()->route('admin.member.index')->with('success','Add Success');
+
+        return redirect()->route('admin.member.index')
+                         ->with('success', 'Add Success');
     }
-    
-    public function edit($id){
-        $result = DB::table('members')->where('id',$id)->first();
-        $edit_myself = null;
-        if ( Auth::user()->id == $id) {
-            $edit_myself = true;
+
+    /* ---------------- EDIT & UPDATE ---------------- */
+    public function edit($id)
+    {
+        $member = DB::table('members')->where('id', $id)->first();
+        if (!$member) {
+            return back()->with('error', 'Member not found');
+        }
+
+        $currentUser = Auth::guard($this->guard)->user();
+        if (!$currentUser) {
+            return redirect()->route('login');
+        }
+
+        $editingOwn = $currentUser->id == (int) $id;
+
+        if ($currentUser->id != 1 && ($id == 1 || ($member->level == 1 && !$editingOwn))) {
+            return back()->with('error', 'Not enough permission to edit');
+        }
+
+        return view('admin.member.edit', compact('member'));
+    }
+
+    public function update(UpdateRequest $request, $id)
+    {
+        $data = $request->validated();
+
+        unset($data['email'], $data['password_confirmation']);
+
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
         } else {
-            $edit_myself = false;
+            unset($data['password']);
         }
-        if (Auth::user()->id != 1 && ($id == 1 || ( $result->level == 1 && $edit_myself == false))){
-            return redirect()->route('admin.member.index')->with('error','Not Enough Permission To edit');
-        }
-        return view('admin.member.edit',['member'=>$result]);
+
+        $data['updated_at'] = new DateTime();
+
+        DB::table('members')->where('id', $id)->update($data);
+
+        return redirect()->route('admin.member.index')
+                         ->with('success', 'Update Success');
     }
 
-    public function update(UpdateRequest $request,$id){
-        $data = $request->except('_token','password_confirmation','password','email');
-        if(!empty($request-> password)){
-            $data['password'] = bcrypt($request-> password);
+    /* ---------------- DELETE ---------------- */
+    public function delete($id)
+    {
+        $member = DB::table('members')->where('id', $id)->first();
+        if (!$member) {
+            return back()->with('error', 'Member not found');
         }
-        $data['updated_at']  = new \DateTime();
-        DB::table('members')->where('id',$id)->update($data);
-        return redirect()->route('admin.member.index')->with('success','Add Success');
-    }
 
-    public function delete($id){
-        $result = DB::table('members')->where('id',$id)->first();
-        if(($id == 1) || Auth::user()->id != 1 &&  $result->level == 1){
-            return redirect()->route('admin.member.index')->with('error','Not Enough Permission To Delete');
+        $currentUser = Auth::guard($this->guard)->user();
+        if (!$currentUser) {
+            return redirect()->route('login');
         }
-        DB::table('members')->where('id',$id)->delete();
-        return redirect()->route('admin.member.index')->with('success','Delete Success');
+
+        if ($id == 1 || ($currentUser->id != 1 && $member->level == 1)) {
+            return back()->with('error', 'Not enough permission to delete');
+        }
+
+        DB::table('members')->where('id', $id)->delete();
+
+        return redirect()->route('admin.member.index')
+                         ->with('success', 'Delete Success');
     }
 }

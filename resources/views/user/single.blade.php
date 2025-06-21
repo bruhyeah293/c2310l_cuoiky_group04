@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						<span class="ti-truck"></span><span>free delivery</span>
 					</div>
 					<div class="product_price">${{$product->price}}</div>
-					<form method="POST" action="{{ route('addToCart', ['id' => $product->id]) }}">
+					<form method="POST" action="{{ route('user.addToCart', ['id' => $product->id]) }}">
                         @csrf
                         <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
                             <span>Quantity:</span>

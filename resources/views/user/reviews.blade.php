@@ -13,10 +13,29 @@
             @foreach($reviews as $review)
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="card h-100 shadow-sm">
-                        <img src="{{ asset('user/' . $review->product_id . '.jpg') }}" class="card-img-top" alt="{{ $review->name }}" style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $review->name }}</h5>
+                        @php
+                            $img = $review->product_image ?? 'noimg.png';
+                        @endphp
+                        <img src="{{ asset('images/' . $img) }}"
+                             class="card-img-top"
+                             alt="{{ $review->product_name }}"
+                             style="height: 200px; object-fit: cover;">
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ $review->product_name }}</h5>
                             <p class="card-text">{{ $review->content }}</p>
+                            <div class="mt-auto">
+                                <small class="text-muted">
+                                    —
+                                    @if (!empty($review->user_email))
+                                        {{ $review->user_email }}
+                                    @elseif (!empty($review->member_email))
+                                        {{ $review->member_email }}
+                                    @else
+                                        Anonymous
+                                    @endif
+                                </small>
+                            </div>
                         </div>
                     </div>
                 </div>

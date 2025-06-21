@@ -1,3 +1,25 @@
+@php
+    $guard = session('guard', 'web');
+    $user = Auth::guard($guard)->user();
+
+    $favorites = [];
+
+    if ($user) {
+        $column = $guard === 'web' ? 'user_id' : 'member_id';
+        $favorites = DB::table('favorites')
+            ->where($column, $user->id)
+            ->pluck('product_id')
+            ->toArray();
+    }
+@endphp
+
+<style>
+    .favorite::before {
+        display: none !important;
+    }
+</style>
+
+
 <div class="new_arrivals">
     <div class="container">
         <div class="row">
@@ -7,21 +29,12 @@
                 </div>
             </div>
         </div>
-        <div class="row align-items-center">
-            {{-- <div class="col text-center">
-                <div class="new_arrivals_sorting">
-                    <ul class="arrivals_grid_sorting clearfix button-group filters-button-group">
-                        <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked" data-filter="*">all</li>
-                        <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".women">women</li>
-                        <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".accessories">accessories</li>
-                        <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".men">men</li>
-                    </ul>
-                </div>
-            </div> --}}
-        </div>
         <div class="row">
             <div class="col">
                 <div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
+                    @php
+                                    $guard = session('guard', 'web'); // fallback là web
+                    @endphp
                     @foreach ($products as $product)
                     <div class="product-item man">
                         <div class="product discount product_filter">
@@ -32,15 +45,36 @@
                                 @endphp
                                 <img src="{{$image_url}}" alt="" width="200" height="200">
                             </div>
-                            <div class="favorite favorite_left"></div>
+                            @php
+                                $isLoggedIn = Auth::guard($guard)->check();
+                            @endphp
+
+                            <div class="custom_favorite favorite_left">
+                                @if ($isLoggedIn)
+                                    @php
+                                        $isFavorited = in_array($product->id, $favorites);
+                                    @endphp
+
+                                    <form action="{{ route('user.add_favorite', $product->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-link p-0 m-0" title="Yêu thích">
+                                            <i class="fa {{ $isFavorited ? 'fa-heart' : 'fa-heart-o' }}" style="color: {{ $isFavorited ? 'red' : 'grey' }}"></i>
+                                        </button>
+                                    </form>
+                                @else
+                                    <a href="{{ route('login') }}" onclick="return confirm('Bạn cần đăng nhập để yêu thích sản phẩm!');">
+                                        <i class="fa fa-heart-o" style="color: grey;" title="Yêu thích"></i>
+                                    </a>
+                                @endif
+                            </div>
                             <div class="product_info">
                                 <h6 class="product_name"><a href="{{ route('user.single', $product->id)}}">{{$product->name}}</a></h6>
                                 <div class="product_price">${{$product->price}}<span></span></div>
                             </div>
                         </div>
                         <div class="red_button add_to_cart_button">
-                                @if(auth()->check())
-                                        <form action="{{ route('addToCart', ['id' => $product->id]) }}" method="POST">
+                                @if (Auth::guard($guard)->check())
+                                    <form action="{{ route('user.addToCart', ['id' => $product->id]) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-danger">Add to Cart</button>
                                     </form>

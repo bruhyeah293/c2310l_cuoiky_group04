@@ -68,7 +68,7 @@
 
                     <!-- Breadcrumbs -->
 
-                    
+
                         <div>
                             @if ($errors->any())
                             <div class="alert alert-danger alert-dismissible">
@@ -105,12 +105,12 @@
                                                     </td> --}}
                                                     <td>{{$item->qty}}</td>
                                                     <td>${{number_format($item->price * $item->qty,0,"",".") }}</td>
-                                                    <td><a href="{{ route('deleteCart',['id' => $item -> rowId]) }}"><i class="fa fa-remove"></i></a></td>
+                                                    <td><a href="{{ route('user.deleteCart',['id' => $item -> rowId]) }}"><i class="fa fa-remove"></i></a></td>
                                                 </tr>
                                             @endforeach
                                     </table>
                                 </div>
-                                <div class="card-body">    
+                                <div class="card-body">
                                     <label for="name">Name</label><em>*</em>
                                     <input type="name" name="name" class="form-control" placeholder="Please enter your name" value="">
 

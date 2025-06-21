@@ -1,106 +1,183 @@
 <style>
-    .navbar_user li a {
-        color: black;
-        text-decoration: none;
-        padding: 2px 6px; /* cho hiệu ứng đẹp hơn */
-        transition: box-shadow 0.3s ease;
-        border-radius: 4px; /* bo góc nhẹ cho viền */
+    header.header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+        background-color: white;
     }
 
-    .navbar_user li a:hover {
-        box-shadow: 0 0 5px 2px #007bff;
-        color: black; /* chữ vẫn đen */
+    body {
+        padding-top: 100px; /* chỉnh đúng chiều cao header */
     }
+
+    @media (max-width: 768px) {
+        body {
+            padding-top: 180px; /* header nhiều dòng hơn trên mobile */
+        }
+    }
+    .custom-login-btn {
+        background-color: #dc3545;
+        color: white !important;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        display: inline-block;
+        line-height: 20px;
+        text-align: center;
+        min-width: 80px;
+    }
+
+    .custom-register-btn {
+        background-color: #007bff;
+        color: white !important;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        display: inline-block;
+        line-height: 20px;
+        text-align: center;
+        min-width: 80px;
+    }
+    .navbar_menu {
+        display: flex;
+        justify-content: center;
+        gap: 20px; /* Khoảng cách giữa các mục */
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+
+    .logo_container {
+        padding-right: 20px;
+    }
+
+    .navbar_menu {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        justify-content: flex-end;
+        gap: 5px;
+    }
+    .navbar_user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar_user li {
+        display: flex;
+        align-items: center;
+    }
+
 </style>
 
 <header class="header trans_300">
     <!-- Top Navigation -->
-
     <div class="top_nav">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="top_nav_left">free shipping on all u.s orders over $50</div>
-                </div>
-                <div class="col-md-6 text-right">
-                    <div class="top_nav_right">
-                        <ul class="top_nav_menu">
-                            @if (Session::has('success'))
-                            <div class="alert alert-success alert-block" style="text-align: center">
-                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                    <strong>{{ Session::get('success') }}</strong>
-                            </div>
-                            @endif
-                            @if (Session::has('error'))
-                            <div class="alert alert-danger alert-block" style="text-align: center">
-                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                    <strong>{{ Session::get('error') }}</strong>
-                            </div>
-                            @endif
-                        </ul>
-                    </div>
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-md-6">
+                <div class="top_nav_left">Free shipping on all U.S. orders over $50</div>
+            </div>
+            <div class="col-md-6 text-right">
+                <div class="top_nav_right">
+                    @if (Session::has('success'))
+                        <div class="alert alert-success alert-block text-center mb-0 py-1">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong>{{ Session::get('success') }}</strong>
+                        </div>
+                    @endif
+                    @if (Session::has('error'))
+                        <div class="alert alert-danger alert-block text-center mb-0 py-1">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong>{{ Session::get('error') }}</strong>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Main Navigation -->
 
     <div class="main_nav_container">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-right">
-                    <div class="logo_container">
-                        <a href="{{ route('index') }}"><span> AIRCONDITIONERS</span></a>
-                    </div>
-                    <nav class="navbar">
-                        <ul class="navbar_menu">
-                            <li><a href="{{ route('index') }}">home</a></li>
-                            <li><a href="{{ route('user.categories') }}">categories</a></li>
-                            {{-- <li><a href="#">shop</a></li> --}}
-                            <li><a href="{{route('user.data_category', 3)}}">for home</a></li>
-                            <li><a href="{{route('user.data_category', 5)}}">for industry </a></li>
-                            <li><a href="{{ route('user.contact') }}">contact</a></li>
-                            <li><a href="{{ route('user.reviews') }}">reviews</a></li>
-                        </ul>
-                        <ul class="navbar_user">
-                            {{-- <li>
-                                <form action="{{ route('search') }}" method="GET" style="display:inline;">
-                                    <button type="submit" style="background:none; border:none; cursor:pointer; color:black;">
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </button>
-                                    <input type="text" name="query" placeholder="Search..." style="border:none; outline:none;" />
-                                </form>
-                            </li> --}}
-                            <li class="checkout" style="margin-right: 20px;">
-                                <a href="{{ route('cart') }}">
-                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                    <span id="checkout_items" class="checkout_items">{{$cart->count()}}</span>
-                                </a>
-                            </li>
-
-                            @guest
-                            <li style="margin-left: 20px;">
-                                <a href="{{ url('/login') }}">Login</a>
-                            </li>
-                            @endguest
-
-                            @auth
-                            <li style="margin-left: 30px; white-space: nowrap;" class="dropdown">
-                                <a href="#" class="dropdown-toggle d-inline-flex align-items-center" data-toggle="dropdown" style="white-space: nowrap;">
-                                    <span style="margin-left: 10px;">{{ Auth::user()->email }}</span>
-                                </a>
-                                <ul class="dropdown-menu text-center">
-                                    <li><a href="{{ route('logout') }}">Logout</a></li>
-                                </ul>
-                            </li>
-                            @endauth
-                        </ul>
-                        <div class="hamburger_container">
-                            <i class="fa fa-bars" aria-hidden="true"></i>
+                <div class="col-lg-12">
+                    <div class="d-flex  justif-between flex-wrap">
+                        <div class="logo_container">
+                            <a href="{{ route('index') }}"><span> AIRCONDITIONERS</span></a>
                         </div>
-                    </nav>
+                        <nav class="navbar d-flex justify-between" style="flex-grow: 1; justify-content: flex-end;">
+                            <ul class="navbar_menu">
+                                <li><a href="{{ route('index') }}">home</a></li>
+                                <li><a href="{{ route('user.categories') }}">categories</a></li>
+                                <li><a href="{{route('user.data_category', 3)}}">for home</a></li>
+                                <li><a href="{{route('user.data_category', 5)}}">for industry </a></li>
+                                <li><a href="{{ route('user.contact') }}">contact</a></li>
+                                <li><a href="{{ route('user.reviews') }}">reviews</a></li>
+                            </ul>
+                        </nav>
+                        <ul class="navbar_user d-flex align-items-center mb-0" style="gap: 10px;">
+                            <li class="checkout" style="margin-right: 10px;">
+                                <a href="{{ route('user.cart') }}">
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                    <span id="checkout_items" class="checkout_items">{{ $cart->count() }}</span>
+                                </a>
+                            </li>
+
+                            @php
+                                $guard = session('guard', 'web');
+                                $currentUser = Auth::guard($guard)->user();
+                            @endphp
+
+                            @if ($currentUser)
+                                <li class="dropdown">
+                                    <a href="#"
+                                    class="dropdown-toggle d-inline-flex align-items-center"
+                                    data-toggle="dropdown">
+                                        <span style="margin-left: 10px;">{{ $currentUser->email }}</span>
+                                    </a>
+
+                                    <ul class="dropdown-menu text-left" style="min-width: 200px;">
+                                        {{-- HIỂN THỊ CÁC MỤC CÁ NHÂN NẾU LEVEL == 2 --}}
+                                        @if ($currentUser->level == 2)
+                                            <li>
+                                                <a href="{{ route('user.favorites') }}" class="dropdown-item">
+                                                    <i class="fa fa-heart-o mr-2"></i> Sản phẩm đã thích
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('user.orders') }}" class="dropdown-item">
+                                                    <i class="fa fa-shopping-bag mr-2"></i> Đơn hàng đã đặt
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                        @endif
+                                        <li>
+                                            <a href="{{ route('logout') }}" class="dropdown-item">
+                                                <i class="fa fa-sign-out mr-2"></i> Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @else
+                                <li><a href="{{ url('/login') }}"    class="custom-login-btn">Login</a></li>
+                                <li><a href="{{ url('/register') }}" class="custom-register-btn">Register</a></li>
+                            @endif
+                        </ul>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

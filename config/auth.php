@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'member' => [ // thêm guard cho member
+            'driver' => 'session',
+            'provider' => 'members',
+        ],
     ],
 
     /*
@@ -60,14 +65,13 @@ return [
     */
 
     'providers' => [
-        // 'users' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\Models\User::class,
-        // ],
-
         'users' => [
-            'driver' => 'database',
-            'table' => 'members',
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+        'members' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Member::class,
         ],
     ],
 
