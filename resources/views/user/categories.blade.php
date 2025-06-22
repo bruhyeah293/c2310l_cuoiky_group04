@@ -1,306 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Categories</title>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="description" content="Colo Shop Template">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="{{ asset('user/assets/styles/bootstrap4/bootstrap.min.css') }}">
-	<link href="{{ asset('user/assets/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="{{ asset('user/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('user/assets/plugins/OwlCarousel2-2.2.1/owl.theme.default.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('user/assets/plugins/OwlCarousel2-2.2.1/animate.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('user/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('user/assets/styles/categories_styles.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('user/assets/styles/categories_responsive.css') }}">
+    <title>Categories</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Colo Shop Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{{ asset('user/assets/styles/bootstrap4/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('user/assets/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('user/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
+    <link rel="stylesheet" href="{{ asset('user/assets/plugins/OwlCarousel2-2.2.1/owl.theme.default.css') }}">
+    <link rel="stylesheet" href="{{ asset('user/assets/plugins/OwlCarousel2-2.2.1/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('user/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ asset('user/assets/styles/categories_styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('user/assets/styles/categories_responsive.css') }}">
+
+    <style>
+        .favorite::before {
+            display: none !important;
+        }
+        /* CSS cho hộp so sánh */
+        .compare-box {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 2px solid #ccc;
+            padding: 8px 10px; /* Giảm padding để hộp so sánh gọn hơn */
+            z-index: 9999;
+        }
+
+        .compare-box .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0; /* Loại bỏ padding không cần thiết */
+        }
+
+        .compare-box .d-flex {
+            gap: 5px; /* Giảm khoảng cách giữa các sản phẩm */
+        }
+
+        .compare-box .product-item {
+            width: 90px; /* Giảm chiều rộng để layout gọn gàng */
+            text-align: center;
+            margin: 0; /* Loại bỏ margin */
+            height: 120px; /* Cố định chiều cao */
+        }
+
+        .compare-box img {
+            width: 70px; /* Cố định kích thước hình ảnh */
+            height: 70px; /* Cố định chiều cao */
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 5px; /* Thêm khoảng cách dưới hình ảnh */
+        }
+
+        .compare-box .product-name {
+            font-size: 12px;
+            margin-top: 5px; /* Tăng khoảng cách trên để tên không bị dính vào ảnh */
+            text-overflow: unset; /* Bỏ việc cắt tên */
+            white-space: normal; /* Cho phép tên sản phẩm xuống dòng nếu quá dài */
+            overflow: unset; /* Bỏ chế độ ẩn tràn */
+        }
+
+        .compare-box .btn-primary {
+            font-size: 12px; /* Điều chỉnh kích thước nút */
+            padding: 5px 10px; /* Điều chỉnh padding của nút */
+        }
+
+    </style>
 </head>
-
 <body>
-
 <div class="super_container">
+    @include('user.blocks.header')
 
-	<!-- Header -->
+    <div class="fs_menu_overlay"></div>
 
-	@include('user.blocks.header')
+    <div class="container product_section_container">
+        <div class="row">
+            <div class="col product_section clearfix">
 
-	<div class="fs_menu_overlay"></div>
+                <!-- Breadcrumbs -->
+                <div class="breadcrumbs d-flex flex-row align-items-center">
+                    <ul>
+                        <li><a href="{{ route('index') }}">Home</a></li>
+                        <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Categories</a></li>
+                    </ul>
+                </div>
 
-	<!-- Hamburger Menu -->
-
-	<div class="hamburger_menu">
-		<div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
-		<div class="hamburger_menu_content text-right">
-			<ul class="menu_top_nav">
-				<li class="menu_item has-children">
-					<a href="#">
-						usd
-						<i class="fa fa-angle-down"></i>
-					</a>
-					<ul class="menu_selection">
-						<li><a href="#">cad</a></li>
-						<li><a href="#">aud</a></li>
-						<li><a href="#">eur</a></li>
-						<li><a href="#">gbp</a></li>
-					</ul>
-				</li>
-				<li class="menu_item has-children">
-					<a href="#">
-						English
-						<i class="fa fa-angle-down"></i>
-					</a>
-					<ul class="menu_selection">
-						<li><a href="#">French</a></li>
-						<li><a href="#">Italian</a></li>
-						<li><a href="#">German</a></li>
-						<li><a href="#">Spanish</a></li>
-					</ul>
-				</li>
-				<li class="menu_item has-children">
-					<a href="#">
-						My Account
-						<i class="fa fa-angle-down"></i>
-					</a>
-					<ul class="menu_selection">
-						<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-						<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-					</ul>
-				</li>
-				<li class="menu_item"><a href="#">home</a></li>
-				<li class="menu_item"><a href="#">shop</a></li>
-				<li class="menu_item"><a href="#">promotion</a></li>
-				<li class="menu_item"><a href="#">pages</a></li>
-				<li class="menu_item"><a href="#">blog</a></li>
-				<li class="menu_item"><a href="#">contact</a></li>
-			</ul>
-		</div>
-	</div>
-
-	<div class="container product_section_container">
-		<div class="row">
-			<div class="col product_section clearfix">
-
-				<!-- Breadcrumbs -->
-
-				<div class="breadcrumbs d-flex flex-row align-items-center">
-					<ul>
-						<li><a href="{{ route('index') }}">Home</a></li>
-						<li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Categories</a></li>
-					</ul>
-				</div>
-
-				<!-- Sidebar -->
-
-				<div class="sidebar">
-					<div class="sidebar_section">
-						<div class="sidebar_title">
-							<h5>Product Category</h5>
-						</div>
-						<ul class="sidebar_categories">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <div class="sidebar_section">
+                        <div class="sidebar_title">
+                            <h5>Product Category</h5>
+                        </div>
+                        <ul class="sidebar_categories">
                             <li><a href="{{ route('user.categories') }}">All</a></li>
-							<li><a href="{{route('user.data_category', 3)}}">Home</a></li>
-							<li><a href="{{route('user.data_category', 5)}}">Industry</a></li>
-							<li><a href="{{route('user.data_category', 9)}}">Smart ACS</a></li>
-						</ul>
-					</div>
+                            <li><a href="{{ route('user.data_category', 3) }}">Home</a></li>
+                            <li><a href="{{ route('user.data_category', 5) }}">Industry</a></li>
+                            <li><a href="{{ route('user.data_category', 9) }}">Smart ACS</a></li>
+                        </ul>
+                    </div>
 
-					<!-- Price Range Filtering -->
-					<div class="sidebar_section">
-						<div class="sidebar_title">
-							<h5>Filter by Price</h5>
-						</div>
-						<p>
-							<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-						</p>
-						<div id="slider-range"></div>
-						<div class="filter_button"><span>filter</span></div>
-					</div>
+                    <!-- Price Range Filtering -->
+                    <div class="sidebar_section">
+                        <div class="sidebar_title">
+                            <h5>Filter by Price</h5>
+                        </div>
+                        <p>
+                            <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                        </p>
+                        <div id="slider-range"></div>
+                        <div class="filter_button"><span>filter</span></div>
+                    </div>
+                </div>
 
-				</div>
+                <!-- Main Content -->
+                <div class="main_content">
 
-				<!-- Main Content -->
+                    <!-- Products -->
+                    <div class="products_iso">
+                        <div class="row">
+                            <div class="col">
 
-				<div class="main_content">
+                                <!-- Product Sorting -->
+                                <div class="product_sorting_container product_sorting_container_top">
+                                    <ul class="product_sorting">
+                                        <li>
+                                            <span class="type_sorting_text">Default Sorting</span>
+                                            <i class="fa fa-angle-down"></i>
+                                            <ul class="sorting_type">
+                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
+                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Price</span></li>
+                                                <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Product Name</span></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
 
-					<!-- Products -->
+                                <!-- Product Grid -->
+                                <div class="product-grid">
+                                    @php
+                                        $guard = session('guard', 'web');
+                                        $user = Auth::guard($guard)->user();
 
-					<div class="products_iso">
-						<div class="row">
-							<div class="col">
+                                        $favorites = [];
+                                        if ($user) {
+                                            $column = $guard === 'web' ? 'user_id' : 'member_id';
+                                            $favorites = DB::table('favorites')
+                                                ->where($column, $user->id)
+                                                ->pluck('product_id')
+                                                ->toArray();
+                                        }
+                                    @endphp
 
-								<!-- Product Sorting -->
-
-								<div class="product_sorting_container product_sorting_container_top">
-									<ul class="product_sorting">
-										<li>
-											<span class="type_sorting_text">Default Sorting</span>
-											<i class="fa fa-angle-down"></i>
-											<ul class="sorting_type">
-												<li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
-												<li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Price</span></li>
-												<li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Product Name</span></li>
-											</ul>
-										</li>
-										{{-- <li>
-											<span>Show</span>
-											<span class="num_sorting_text">6</span>
-											<i class="fa fa-angle-down"></i>
-											<ul class="sorting_num">
-												<li class="num_sorting_btn"><span>6</span></li>
-												<li class="num_sorting_btn"><span>12</span></li>
-												<li class="num_sorting_btn"><span>24</span></li>
-											</ul>
-										</li> --}}
-									</ul>
-									{{-- <div class="pages d-flex flex-row align-items-center">
-										<div class="page_current">
-											<span>1</span>
-											<ul class="page_selection">
-												<li><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-											</ul>
-										</div>
-										<div class="page_total"><span>of</span> 3</div>
-										<div id="next_page" class="page_next"><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
-									</div> --}}
-
-								</div>
-
-								<!-- Product Grid -->
-
-								<div class="product-grid">
-
-									<!-- Product 1 -->
                                     @foreach ($products as $product)
-									<div class="product-item men">
-										<div class="product discount product_filter">
-											<div class="product_image">
-												@php
-                                                    $img= $product->image == NULL ? 'noimg.png' : $product->image;
-                                                    $image_url= asset('images/'.$img)
-                                                @endphp
-                                                <img src="{{$image_url}}" alt="" width="200" height="200">
-											</div>
-											<div class="favorite favorite_left"></div>
-											<div class="product_info">
-												<h6 class="product_name"><a href="{{ route('user.single', $product->id)}}">{{$product->name}}</a></h6>
-												<div class="product_price">${{$product->price}}</div>
-											</div>
-										</div>
-										<div class="red_button add_to_cart_button"><a href="{{ route('user.addToCart',['id'=> $product->id]) }}">add to cart</a></div>
-									</div>
+                                        <div class="product-item men">
+                                            <div class="product discount product_filter">
+                                                <div class="product_image">
+                                                    @php
+                                                        $img = $product->image == NULL ? 'noimg.png' : $product->image;
+                                                        $image_url = asset('images/' . $img);
+                                                    @endphp
+                                                    <img src="{{$image_url}}" alt="" width="200" height="200">
+                                                </div>
+
+                                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                                    @if (Auth::guard($guard)->check())
+                                                        @php
+                                                            $isFavorited = in_array($product->id, $favorites);
+                                                        @endphp
+                                                        <form action="{{ route('user.add_favorite', $product->id) }}" method="POST" class="me-2">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-link p-0 m-0" title="Yêu thích">
+                                                                <i class="fa {{ $isFavorited ? 'fa-heart' : 'fa-heart-o' }}" style="color: {{ $isFavorited ? 'red' : 'grey' }}"></i>
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        <a href="{{ route('login') }}" onclick="return confirm('Bạn cần đăng nhập để yêu thích sản phẩm!');" class="me-2">
+                                                            <i class="fa fa-heart-o" style="color: grey;" title="Yêu thích"></i>
+                                                        </a>
+                                                    @endif
+
+                                                    <form action="{{ route('user.add_compare', $product->id) }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-sm btn-outline-primary" title="So sánh">
+                                                            <i class="fa fa-exchange"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+
+                                                <div class="product_info">
+                                                    <h6 class="product_name">
+                                                        <a href="{{ route('user.single', $product->id) }}">{{$product->name}}</a>
+                                                    </h6>
+                                                    <div class="product_price">${{$product->price}}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="red_button add_to_cart_button">
+                                                @if (Auth::guard($guard)->check())
+                                                    <form action="{{ route('user.addToCart', ['id' => $product->id]) }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger">Add to Cart</button>
+                                                    </form>
+                                                @else
+                                                    <a href="{{ route('login') }}" onclick="return confirm('Bạn cần đăng nhập để thêm vào giỏ hàng!');">add to cart</a>
+                                                @endif
+                                            </div>
+                                        </div>
                                     @endforeach
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                                </div>
 
-	<!-- Benefit -->
+                            </div>
+                        </div>
+                    </div>
 
-	<div class="benefit">
-		<div class="container">
-			<div class="row benefit_row">
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>free shipping</h6>
-							<p>Suffered Alteration in Some Form</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>cach on delivery</h6>
-							<p>The Internet Tend To Repeat</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>45 days return</h6>
-							<p>Making it Look Like Readable</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>opening all week</h6>
-							<p>8AM - 09PM</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<!-- Newsletter -->
+    <!-- Compare Box -->
+    @if(session('compare') && count(session('compare')) > 0)
+        @php
+            $compareIds = session('compare', []);
+            $compareIds = is_array($compareIds) ? array_values($compareIds) : [];
+            $compareCount = count($compareIds);
 
-	<div class="newsletter">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6">
-					<div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
-						<h4>Newsletter</h4>
-						<p>Subscribe to our newsletter and get 20% off your first purchase</p>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
-						<input id="newsletter_email" type="email" placeholder="Your email" required="required" data-error="Valid email is required.">
-						<button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">subscribe</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+            $compareProducts = $compareCount > 0
+                ? \Illuminate\Support\Facades\DB::table('products')
+                    ->join('category', 'products.category_id', '=', 'category.id')
+                    ->select('products.*', 'category.name as category_name')
+                    ->whereIn('products.id', $compareIds)
+                    ->get()
+                : collect();
+        @endphp
 
-	<!-- Footer -->
+        @if($compareCount > 0)
+            <div class="compare-box">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <div class="d-flex gap-3">
+                        @foreach($compareProducts as $cp)
+                            <div class="product-item">
+                                <img src="{{ asset('images/' . ($cp->image ?? 'noimg.png')) }}" alt="{{ $cp->name }}" width="70" height="70" style="object-fit: cover; border-radius: 5px;">
+                                <div class="product-name">{{ $cp->name }}</div>
+                                <form method="POST" action="{{ route('user.remove_compare', $cp->id) }}" style="position: absolute; top: -8px; right: -8px;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="border: none; background: transparent; font-size: 14px;" onclick="event.stopPropagation();">
+                                        ❌
+                                    </button>
+                                </form>
+                            </div>
+                        @endforeach
+                    </div>
+                    <a href="{{ route('user.compare') }}" class="btn btn-primary btn-sm">So sánh ({{ $compareCount }})</a>
+                </div>
+            </div>
+        @endif
+    @endif
 
-	<footer class="footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6">
-					<div class="footer_nav_container d-flex flex-sm-row flex-column align-items-center justify-content-lg-start justify-content-center text-center">
-						<ul class="footer_nav">
-							<li><a href="#">Blog</a></li>
-							<li><a href="#">FAQs</a></li>
-							<li><a href="contact.html">Contact us</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="footer_social d-flex flex-row align-items-center justify-content-lg-end justify-content-center">
-						<ul>
-							<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-							<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-							<li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-							<li><a href="#"><i class="fa fa-skype" aria-hidden="true"></i></a></li>
-							<li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="footer_nav_container">
-						<div class="cr">©2025 All Rights Reserverd.<a href="#">Colorlib</a> &amp; distributed by <a href="https://themewagon.com">ThemeWagon</a></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
-
+    @include('user.blocks.benefit')
+    @include('user.blocks.newsletter')
+    @include('user.blocks.footer')
 </div>
 
 <script src="{{ asset('user/assets/js/jquery-3.2.1.min.js') }}"></script>
@@ -312,6 +278,4 @@
 <script src="{{ asset('user/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.js') }}"></script>
 <script src="{{ asset('user/assets/js/categories_custom.js') }}"></script>
 </body>
-
 </html>
-

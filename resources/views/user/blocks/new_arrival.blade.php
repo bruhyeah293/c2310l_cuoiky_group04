@@ -49,24 +49,33 @@
                                 $isLoggedIn = Auth::guard($guard)->check();
                             @endphp
 
-                            <div class="custom_favorite favorite_left">
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                {{-- Nút yêu thích --}}
                                 @if ($isLoggedIn)
                                     @php
                                         $isFavorited = in_array($product->id, $favorites);
                                     @endphp
-
-                                    <form action="{{ route('user.add_favorite', $product->id) }}" method="POST">
+                                    <form action="{{ route('user.add_favorite', $product->id) }}" method="POST" class="me-2">
                                         @csrf
                                         <button type="submit" class="btn btn-link p-0 m-0" title="Yêu thích">
                                             <i class="fa {{ $isFavorited ? 'fa-heart' : 'fa-heart-o' }}" style="color: {{ $isFavorited ? 'red' : 'grey' }}"></i>
                                         </button>
                                     </form>
                                 @else
-                                    <a href="{{ route('login') }}" onclick="return confirm('Bạn cần đăng nhập để yêu thích sản phẩm!');">
+                                    <a href="{{ route('login') }}" onclick="return confirm('Bạn cần đăng nhập để yêu thích sản phẩm!');" class="me-2">
                                         <i class="fa fa-heart-o" style="color: grey;" title="Yêu thích"></i>
                                     </a>
                                 @endif
+
+                                {{-- Nút so sánh --}}
+                                <form action="{{ route('user.add_compare', $product->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-outline-primary" title="So sánh">
+                                        <i class="fa fa-exchange"></i>
+                                    </button>
+                                </form>
                             </div>
+
                             <div class="product_info">
                                 <h6 class="product_name"><a href="{{ route('user.single', $product->id)}}">{{$product->name}}</a></h6>
                                 <div class="product_price">${{$product->price}}<span></span></div>

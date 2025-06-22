@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\PaymentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Cart;
-use DB;
 use Termwind\Components\Dd;
 
 class UserController extends Controller
@@ -248,21 +249,63 @@ class UserController extends Controller
 
 
     public function orders()
-{
-    $guard = session('guard', 'web');
-    $user = Auth::guard($guard)->user();
+    {
+        $guard = session('guard', 'web');
+        $user = Auth::guard($guard)->user();
 
-    if (!$user) {
-        return redirect()->route('login')->with('error', 'Bạn cần đăng nhập');
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập');
+        }
+
+        $column = $guard === 'web' ? 'user_id' : 'member_id';
+
+        $orders = DB::table('cart')
+                    ->where($column, $user->id)
+                    ->get();
+
+        return view('user.orders', compact('orders'));
     }
 
-    $column = $guard === 'web' ? 'user_id' : 'member_id';
+    public function addCompare($id)
+    {
+        $compare = session()->get('compare', []);
 
-    $orders = DB::table('cart')
-                ->where($column, $user->id)
-                ->get();
+        if (!in_array($id, $compare)) {
+            // Giới hạn số lượng sản phẩm so sánh
+            if (count($compare) >= 3) {
+                return back()->with('error', 'Bạn chỉ được chọn tối đa 3 sản phẩm để so sánh.');
+            }
 
-    return view('user.orders', compact('orders'));
-}
+            $compare[] = $id;  // Thêm sản phẩm vào giỏ so sánh
+            $compare = array_values($compare); // Làm sạch chỉ mục sau khi thêm sản phẩm
+            session()->put('compare', $compare);  // Cập nhật lại session
+        }
 
+        return back()->with('success', 'Đã thêm vào danh sách so sánh.');
+    }
+
+    public function removeCompare($id)
+    {
+        $compare = session()->get('compare', []);
+        $compare = array_filter($compare, fn($item) => $item != $id);
+        $compare = array_values($compare);
+
+        session()->put('compare', $compare);
+        return redirect()->back()->with('success', 'Đã xóa sản phẩm khỏi so sánh!');
+    }
+
+
+
+    public function compare()
+    {
+        $compareIds = session('compare', []);
+
+        $products = DB::table('products')
+            ->join('category', 'products.category_id', '=', 'category.id')
+            ->select('products.*', 'category.name as category_name')
+            ->whereIn('products.id', $compareIds)
+            ->get();
+
+        return view('user.compare', compact('products'));
+    }
 }
