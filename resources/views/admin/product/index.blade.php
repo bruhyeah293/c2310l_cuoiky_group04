@@ -2,15 +2,15 @@
 @section('content')
 <div class="panel panel-default">
    <div class="panel-heading">
-       Products List
+       Product List
     </div>
     <!-- /.card-header -->
     <div class="panel-body">
       <form action="" method="get" class="form-horizontal">
          <div class="input-group">
-            <input type="text" class="input-sm form-control" placeholder="Search" name="keyc">
+            <input type="text" class="input-sm form-control" placeholder="Search by name or price" name="keyc">
             <span class="input-group-btn">
-            <button class="btn btn-sm btn-default" type="submit">Search</button>
+                <button class="btn btn-sm btn-default" type="submit">Search</button>
             </span>
          </div>
       </form>
@@ -18,12 +18,12 @@
           <thead>
              <tr>
                 <th>Image</th>
-                <th>Name Product</th>
+                <th>Product Name</th>
                 <th>Category</th>
                 <th>Price</th>
                 <th>Quantity</th>
-                <th>Status</th> 
-                <th>Outstanding</th>
+                <th>Status</th>
+                <th>Featured</th>
                 <th>Edit</th>
                 <th>Delete</th>
              </tr>
@@ -32,35 +32,45 @@
               @forelse ($products as $product)
              <tr>
                 <td>
-                  @php 
-                  $img= $product->image == NULL ? 'noimg.png' : $product->image;          
-                  $image_url= asset('images/'.$img) 
+                  @php
+                  $img = $product->image == NULL ? 'noimg.png' : $product->image;
+                  $image_url = asset('images/' . $img)
                   @endphp
-                  <img src="{{$image_url}}" alt="" width="200" height="200">
+                  <img src="{{ $image_url }}" alt="Product Image" width="200" height="200">
                 </td>
-                <td>{{ $product->name}}</td>
-                <td>{{ $product->cname}}</td>
-                <td>{{ $product->price}}</td>
-                <td>{{ $product->quantity}}</td>
+                <td>{{ $product->name }}</td>
+                <td>{{ $product->cname }}</td>
+                <td>{{ $product->price }}</td>
+                <td>{{ $product->quantity }}</td>
                 <td>
-                  @if ($product->status ==0)
-                     <strong>Hidden</strong> 
+                  @if ($product->status == 0)
+                     <strong>Hidden</strong>
                   @else
-                     <strong>Show</strong> 
-                  @endif   
-                  </td>
-                <td>
-                  @if ( $product->featured ==0)
-                     <strong>No</strong> 
-                  @else
-                     <strong>Yes</strong> 
+                     <strong>Visible</strong>
                   @endif
                 </td>
-                <td><a href="{{route('admin.product.edit', $product->id)}}">Edit</a></td>
-                <td><a href="{{route('admin.product.delete', $product->id)}}" onclick="return confirmDelete()">Delete</a></td>
+                <td>
+                  @if ($product->featured == 0)
+                     <strong>No</strong>
+                  @else
+                     <strong>Yes</strong>
+                  @endif
+                </td>
+                <td>
+                    <a href="{{ route('admin.product.edit', $product->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                </td>
+                <td>
+                    <form action="{{ route('admin.product.delete', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
              </tr>
              @empty
-            <tr><td colspan="8" align="center">No Data</td></tr>
+             <tr>
+                <td colspan="9" align="center">No data available</td>
+             </tr>
              @endforelse
           </tbody>
        </table>
@@ -68,24 +78,14 @@
     <footer class="panel-footer">
       <div class="row">
           <div class="col-sm-5 text-center">
-              {{-- <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small> --}}
-          </div> 
+              {{-- You can show summary info here --}}
+          </div>
           <div class="col-sm-7 text-right text-center-xs">
               <ul class="pagination pagination-sm m-t-none m-b-none">
-                  {{-- <li>
-                      <a href=""><i class="fa fa-chevron-left"></i></a>
-                  </li>
-                  <li><a href="">1</a></li>
-                  <li><a href="">2</a></li>
-                  <li><a href="">3</a></li>
-                  <li><a href="">4</a></li>
-                  <li>
-                      <a href=""><i class="fa fa-chevron-right"></i></a> --}}
-        
-                  {{$products->links()}}
+                  {{ $products->links() }}
               </ul>
           </div>
       </div>
   </footer>
- </div>
- @endsection
+</div>
+@endsection

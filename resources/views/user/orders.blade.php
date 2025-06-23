@@ -1,26 +1,26 @@
 @extends('user.master')
 
-@section('title', 'Đơn hàng đã đặt')
+@section('title', 'Order History')
 
 @section('content')
 <div class="container mt-5">
-    <h2 class="mb-4">Đơn hàng đã đặt</h2>
+    <h2 class="mb-4">Order History</h2>
     @if($orders->isEmpty())
-        <p>Bạn chưa có đơn hàng nào.</p>
+        <p>You have not placed any orders yet.</p>
     @else
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Mã đơn</th>
-                    <th>Sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Tên người nhận</th>
-                    <th>Quốc gia</th>
-                    <th>Địa chỉ</th>
-                    <th>Điện thoại</th>
+                    <th>Order ID</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Recipient Name</th>
+                    <th>Country</th>
+                    <th>Address</th>
+                    <th>Phone</th>
                     <th>Email</th>
-                    <th>Tổng tiền</th>
-                    <th>Trạng thái</th>
+                    <th>Total</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +35,15 @@
                     <td>{{ $order->phone }}</td>
                     <td>{{ $order->email }}</td>
                     <td>{{ $order->total }}</td>
-                    <td>{{ $order->status ?? 'Đang xử lý' }}</td>
+                    <td>
+                        @if($order->status == 1)
+                            <span class="text-success">Accepted</span>
+                        @elseif($order->status == 0)
+                            <span class="text-danger">Rejected</span>
+                        @else
+                            <span class="text-warning">Pending</span>
+                        @endif
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

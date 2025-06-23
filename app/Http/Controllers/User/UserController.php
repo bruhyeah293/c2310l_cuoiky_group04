@@ -7,9 +7,9 @@ use App\Http\Requests\User\PaymentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Session;
 use Cart;
-use Termwind\Components\Dd;
 
 class UserController extends Controller
 {
@@ -37,11 +37,9 @@ class UserController extends Controller
         ]);
     }
 
-
-
     public function contact(){
         $cart = Cart::content();
-        return view('user.contact',['cart' => $cart]);
+        return view('user.contact', ['cart' => $cart]);
     }
 
     public function categories(){
@@ -68,17 +66,23 @@ class UserController extends Controller
         ]);
     }
 
-
     public function single($id){
         $result = DB::table('products')->where('id',$id)->first();
         $cart = Cart::content();
-        return view('user.single',['cart' => $cart,'product' => $result],);
+        return view('user.single', ['cart' => $cart, 'product' => $result]);
     }
 
-    public function payment(){
+    public function payment()
+    {
         $cart = Cart::content();
-        return view('user.payment',['cart' => $cart]);
+
+        if ($cart->count() == 0) {
+            return redirect()->route('index')->with('error', 'Please add at least one product to your cart before checking out.');
+        }
+
+        return view('user.payment', ['cart' => $cart]);
     }
+
     public function subscribe(Request $request)
     {
         $request->validate([
@@ -87,52 +91,53 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Thank you for subscribing!');
     }
 
-
     public function uppayment(PaymentRequest $request)
-{
-    $carts = \Cart::content();
+    {
+        $carts = Cart::content();
 
-    $guard = session('guard', 'web');
-    $user = Auth::guard($guard)->user();
-
-    foreach ($carts as $cart) {
-        $data = [
-            'product_id' => $cart->id,
-            'qty'        => $cart->qty,
-            'name'       => $request->name,
-            'address'    => $request->address,
-            'phone'      => $request->phone,
-            'email'      => $request->email,
-            'national'   => $request->national,
-            'created_at' => now(),
-            'status'     => 0,
-            'total'      => $cart->total,
-        ];
-
-        // Thêm thông tin người dùng
-        if ($user) {
-            if ($guard === 'web') {
-                $data['user_id'] = $user->id;
-            } else {
-                $data['member_id'] = $user->id;
-            }
+        if ($carts->count() == 0) {
+            return redirect()->route('index')->with('error', 'There are no items in the cart to checkout.');
         }
 
-        DB::table('cart')->insert($data);
+        $guard = session('guard', 'web');
+        $user = Auth::guard($guard)->user();
+
+        foreach ($carts as $cart) {
+            $data = [
+                'product_id' => $cart->id,
+                'qty'        => $cart->qty,
+                'name'       => $request->name,
+                'address'    => $request->address,
+                'phone'      => $request->phone,
+                'email'      => $request->email,
+                'national'   => $request->national,
+                'created_at' => now(),
+                'status'     => -1,
+                'total'      => $cart->total,
+            ];
+
+            if ($user) {
+                if ($guard === 'web') {
+                    $data['user_id'] = $user->id;
+                } else {
+                    $data['member_id'] = $user->id;
+                }
+            }
+
+            DB::table('cart')->insert($data);
+        }
+
+        $firstProductId = $carts->first()->id ?? null;
+
+        Cart::destroy();
+
+        if ($firstProductId) {
+            return redirect()->route('review.form', ['product_id' => $firstProductId])
+                ->with('success','Order placed successfully! Leave a review or press Cancel to return to the homepage.');
+        }
+
+        return redirect()->route('index')->with('success','Order placed successfully.');
     }
-
-    $firstProductId = $carts->first()->id ?? null;
-
-    \Cart::destroy();
-
-    if ($firstProductId) {
-        return redirect()->route('review.form', ['product_id' => $firstProductId])
-                         ->with('success','Order Success! Write your review or press Cancel to return to home');
-    }
-
-    return redirect()->route('index')->with('success','Order Success');
-}
-
 
     public function allReviews()
     {
@@ -145,7 +150,7 @@ class UserController extends Controller
             )
             ->get();
 
-        $cart = \Cart::content();
+        $cart = Cart::content();
         return view('user.reviews', compact('reviews', 'cart'));
     }
 
@@ -178,9 +183,20 @@ class UserController extends Controller
         ]);
     }
 
-
     public function contactPost(Request $request)
     {
+        $request->validate([
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
+            'message' => 'required|string',
+        ]);
+
+        Contact::create([
+            'name'    => $request->name,
+            'email'   => $request->email,
+            'message' => $request->message,
+        ]);
+
         return redirect()->back()->with('success', 'Thank you for contacting us!');
     }
 
@@ -192,7 +208,7 @@ class UserController extends Controller
 
         $favorites = DB::table('favorites')
             ->join('products','favorites.product_id','=','products.id')
-            ->where($guard==='web' ? 'favorites.user_id':'favorites.member_id', $user->id)
+            ->where($guard === 'web' ? 'favorites.user_id' : 'favorites.member_id', $user->id)
             ->select('products.*')
             ->get();
 
@@ -206,9 +222,9 @@ class UserController extends Controller
     {
         $guard = session('guard', 'web');
         $user  = Auth::guard($guard)->user();
-        if (!$user) return redirect()->route('login')->with('error','Bạn cần đăng nhập');
+        if (!$user) return redirect()->route('login')->with('error','You must be logged in.');
 
-        $col = $guard==='web' ? 'user_id' : 'member_id';
+        $col = $guard === 'web' ? 'user_id' : 'member_id';
 
         $exists = DB::table('favorites')
             ->where('product_id', $productId)
@@ -222,7 +238,7 @@ class UserController extends Controller
                 'created_at' => now(),
             ]);
         }
-        return back()->with('success','Đã thêm vào yêu thích!');
+        return back()->with('success','Added to favorites!');
     }
 
     public function removeFavorite($productId)
@@ -231,7 +247,7 @@ class UserController extends Controller
         $user = Auth::guard($guard)->user();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để thực hiện thao tác này.');
+            return redirect()->route('login')->with('error', 'You must be logged in to perform this action.');
         }
 
         $query = DB::table('favorites')->where('product_id', $productId);
@@ -244,9 +260,8 @@ class UserController extends Controller
 
         $query->delete();
 
-        return back()->with('success', 'Đã xóa khỏi danh sách yêu thích.');
+        return back()->with('success', 'Removed from favorites.');
     }
-
 
     public function orders()
     {
@@ -254,7 +269,7 @@ class UserController extends Controller
         $user = Auth::guard($guard)->user();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập');
+            return redirect()->route('login')->with('error', 'You must be logged in.');
         }
 
         $column = $guard === 'web' ? 'user_id' : 'member_id';
@@ -268,36 +283,37 @@ class UserController extends Controller
 
     public function addCompare($id)
     {
+        $guard = session('guard', 'web');
+        $user = Auth::guard($guard)->user();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'You must be logged in to perform this action.');
+        }
+
         $compare = session()->get('compare', []);
 
         if (!in_array($id, $compare)) {
-            // Giới hạn số lượng sản phẩm so sánh
             if (count($compare) >= 3) {
-                return back()->with('error', 'Bạn chỉ được chọn tối đa 3 sản phẩm để so sánh.');
+                return back()->with('error', 'You can only compare up to 3 products.');
             }
 
-            $compare[] = $id;  // Thêm sản phẩm vào giỏ so sánh
-            $compare = array_values($compare); // Làm sạch chỉ mục sau khi thêm sản phẩm
-            session()->put('compare', $compare);  // Cập nhật lại session
+            $compare[] = $id;
+            $compare = array_values($compare);
+            session()->put('compare', $compare);
         }
 
-        return back()->with('success', 'Đã thêm vào danh sách so sánh.');
+        return back()->with('success', 'Added to comparison list.');
     }
-
-    public function removeCompare($id)
-    {
-        $compare = session()->get('compare', []);
-        $compare = array_filter($compare, fn($item) => $item != $id);
-        $compare = array_values($compare);
-
-        session()->put('compare', $compare);
-        return redirect()->back()->with('success', 'Đã xóa sản phẩm khỏi so sánh!');
-    }
-
-
 
     public function compare()
     {
+        $guard = session('guard', 'web');
+        $user = Auth::guard($guard)->user();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'You must be logged in to view your comparison list.');
+        }
+
         $compareIds = session('compare', []);
 
         $products = DB::table('products')
@@ -307,5 +323,15 @@ class UserController extends Controller
             ->get();
 
         return view('user.compare', compact('products'));
+    }
+
+    public function removeCompare($id)
+    {
+        $compare = session()->get('compare', []);
+        $compare = array_filter($compare, fn($item) => $item != $id);
+        $compare = array_values($compare);
+
+        session()->put('compare', $compare);
+        return redirect()->back()->with('success', 'Product removed from comparison!');
     }
 }

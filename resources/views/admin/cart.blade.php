@@ -48,9 +48,6 @@
                     <tr>
                         @foreach ($carts as $cart )
                             <tr>
-                                <!-- <td>
-                                <label class="i-checks m-b-none"><input type="checkbox" name="post[]" /><i></i></label>
-                                </td> -->
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$cart->product_id}}</td>
                                 <td>{{$cart->qty}}</td>
@@ -59,11 +56,22 @@
                                 <td>{{$cart->address}}</td>
                                 <td>{{$cart->phone}}</td>
                                 <td>${{$cart->total}}</td>
-                                <td>@if ($cart->status==0) Delivery in progress @elseif($cart->status==1) Delivered @else Cancel @endif</td>
+                                <td>@if ($cart->status==-1) Delivery in progress @elseif($cart->status==1) Delivered @else Cancel @endif</td>
                                 <td>
-                                <a href="{{route('admin.success', $cart->id)}}" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active" style="width:50px; height:30px"></i></a>
-                                <a href="{{route('admin.cancel', $cart->id)}}" class="active" ui-toggle-class=""><i class="fa fa-times text-danger text"style="width:50px; height:30px"></i></a>
+                                    @if ($cart->status == -1)
+                                        <a href="{{route('admin.success', $cart->id)}}" class="btn btn-success btn-sm" title="Confirm Order">
+                                            <i class="fa fa-check"></i>
+                                        </a>
+                                        <a href="{{route('admin.cancel', $cart->id)}}" class="btn btn-danger btn-sm" title="Cancel Order">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    @elseif ($cart->status == 1)
+                                        <span class="badge badge-success">Confirmed</span>
+                                    @else
+                                        <span class="badge badge-danger">Canceled</span>
+                                    @endif
                                 </td>
+
                             </tr>
                         @endforeach
                 </tbody>
@@ -83,11 +91,8 @@
                         <li><a href="">2</a></li>
                         <li><a href="">3</a></li>
                         <li><a href="">4</a></li>
-                        <li>
-                            <a href=""><i class="fa fa-chevron-right"></i></a>
-                        </li>
                     </ul>
-                </div> 
+                </div>
             </div>
         </footer>
     </div>

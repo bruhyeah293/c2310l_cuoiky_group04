@@ -74,6 +74,16 @@
     </style>
 </head>
 <body>
+    <!-- ... phần đầu giữ nguyên ... -->
+
+<title>Categories</title>
+
+<!-- ... -->
+
+<!-- CSS for compare box -->
+
+<!-- ... -->
+
 <div class="super_container">
     @include('user.blocks.header')
 
@@ -95,7 +105,7 @@
                 <div class="sidebar">
                     <div class="sidebar_section">
                         <div class="sidebar_title">
-                            <h5>Product Category</h5>
+                            <h5>Product Categories</h5>
                         </div>
                         <ul class="sidebar_categories">
                             <li><a href="{{ route('user.categories') }}">All</a></li>
@@ -114,7 +124,7 @@
                             <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
                         </p>
                         <div id="slider-range"></div>
-                        <div class="filter_button"><span>filter</span></div>
+                        <div class="filter_button"><span>Filter</span></div>
                     </div>
                 </div>
 
@@ -175,19 +185,19 @@
                                                         @endphp
                                                         <form action="{{ route('user.add_favorite', $product->id) }}" method="POST" class="me-2">
                                                             @csrf
-                                                            <button type="submit" class="btn btn-link p-0 m-0" title="Yêu thích">
+                                                            <button type="submit" class="btn btn-link p-0 m-0" title="Favorite">
                                                                 <i class="fa {{ $isFavorited ? 'fa-heart' : 'fa-heart-o' }}" style="color: {{ $isFavorited ? 'red' : 'grey' }}"></i>
                                                             </button>
                                                         </form>
                                                     @else
-                                                        <a href="{{ route('login') }}" onclick="return confirm('Bạn cần đăng nhập để yêu thích sản phẩm!');" class="me-2">
-                                                            <i class="fa fa-heart-o" style="color: grey;" title="Yêu thích"></i>
+                                                        <a href="{{ route('login') }}" onclick="return confirm('You need to log in to favorite this product!');" class="me-2">
+                                                            <i class="fa fa-heart-o" style="color: grey;" title="Favorite"></i>
                                                         </a>
                                                     @endif
 
                                                     <form action="{{ route('user.add_compare', $product->id) }}" method="POST">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-sm btn-outline-primary" title="So sánh">
+                                                        <button type="submit" class="btn btn-sm btn-outline-primary" title="Compare">
                                                             <i class="fa fa-exchange"></i>
                                                         </button>
                                                     </form>
@@ -208,7 +218,7 @@
                                                         <button type="submit" class="btn btn-danger">Add to Cart</button>
                                                     </form>
                                                 @else
-                                                    <a href="{{ route('login') }}" onclick="return confirm('Bạn cần đăng nhập để thêm vào giỏ hàng!');">add to cart</a>
+                                                    <a href="{{ route('login') }}" onclick="return confirm('You need to log in to add to cart!');">Add to Cart</a>
                                                 @endif
                                             </div>
                                         </div>
@@ -258,7 +268,7 @@
                             </div>
                         @endforeach
                     </div>
-                    <a href="{{ route('user.compare') }}" class="btn btn-primary btn-sm">So sánh ({{ $compareCount }})</a>
+                    <a href="{{ route('user.compare') }}" class="btn btn-primary btn-sm">Compare ({{ $compareCount }})</a>
                 </div>
             </div>
         @endif
@@ -269,6 +279,7 @@
     @include('user.blocks.footer')
 </div>
 
+<!-- Scripts -->
 <script src="{{ asset('user/assets/js/jquery-3.2.1.min.js') }}"></script>
 <script src="{{ asset('user/assets/styles/bootstrap4/popper.js') }}"></script>
 <script src="{{ asset('user/assets/styles/bootstrap4/bootstrap.min.js') }}"></script>
@@ -277,5 +288,6 @@
 <script src="{{ asset('user/assets/plugins/easing/easing.js') }}"></script>
 <script src="{{ asset('user/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.js') }}"></script>
 <script src="{{ asset('user/assets/js/categories_custom.js') }}"></script>
+
 </body>
 </html>

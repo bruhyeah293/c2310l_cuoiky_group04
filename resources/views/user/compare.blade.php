@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container my-5">
-    <h2 class="mb-4 text-center">So sánh sản phẩm</h2>
+    <h2 class="mb-4 text-center">Compare Products</h2>
 
     @if(count($products) > 0)
         <div class="row justify-content-center">
@@ -18,21 +18,21 @@
 
                         <div class="card-body d-flex flex-column text-start">
                             <h5 class="card-title text-center mt-3">{{ $product->name }}</h5>
-                            <p class="card-text mb-1"><strong>Danh mục:</strong> {{ $product->category_name ?? 'Không có' }}</p>
-                            <p class="card-text mb-1"><strong>Giá:</strong> {{ number_format($product->price) }} VNĐ</p>
-                            <p class="card-text mb-1"><strong>Số lượng:</strong> {{ $product->quantity }}</p>
-                            <p class="card-text mb-1"><strong>Giới thiệu:</strong> {{ $product->intro }}</p>
-                            <p class="card-text mb-3"><strong>Nội dung:</strong> {{ \Illuminate\Support\Str::limit($product->content, 100) }}</p>
+                            <p class="card-text mb-1"><strong>Category:</strong> {{ $product->category_name ?? 'N/A' }}</p>
+                            <p class="card-text mb-1"><strong>Price:</strong> {{ number_format($product->price) }} VND</p>
+                            <p class="card-text mb-1"><strong>Quantity:</strong> {{ $product->quantity }}</p>
+                            <p class="card-text mb-1"><strong>Introduction:</strong> {{ $product->intro }}</p>
+                            <p class="card-text mb-3"><strong>Content:</strong> {{ \Illuminate\Support\Str::limit($product->content, 100) }}</p>
 
                             <div class="d-flex justify-content-between mt-auto pt-3">
                                 <a href="{{ route('user.single', $product->id) }}" class="btn btn-outline-primary btn-sm">
-                                    Xem chi tiết
+                                    View Details
                                 </a>
 
                                 <form method="POST" action="{{ route('user.remove_compare', $product->id) }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-outline-danger btn-sm">Xóa</button>
+                                    <button class="btn btn-outline-danger btn-sm">Remove</button>
                                 </form>
                             </div>
                         </div>
@@ -40,15 +40,22 @@
                 </div>
             @endforeach
         </div>
-    @else
-        <p class="text-center">Chưa có sản phẩm nào trong danh sách so sánh.</p>
+
+        {{-- Nếu sản phẩm < 3 thì hiển thị nút thêm --}}
         @if(count($products) < 3)
             <div class="text-center mt-4">
                 <a href="{{ route('user.categories') }}" class="btn btn-success">
-                    ➕ Thêm sản phẩm vào so sánh
+                    ➕ Add more products to compare
                 </a>
             </div>
         @endif
+    @else
+        <p class="text-center">There are no products in your comparison list.</p>
+        <div class="text-center mt-4">
+            <a href="{{ route('user.categories') }}" class="btn btn-success">
+                ➕ Add products to compare
+            </a>
+        </div>
     @endif
 </div>
 @endsection

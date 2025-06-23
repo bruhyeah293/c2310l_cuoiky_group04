@@ -1,23 +1,23 @@
 @extends('user.master')
 
-@section('title', 'Sản phẩm đã thích')
+@section('title', 'Liked Products')
 
 @section('content')
 <style>
     .card-img-top {
         width: 100%;
         height: 200px;
-        object-fit: cover; /* Giữ tỷ lệ ảnh, cắt bớt nếu cần */
+        object-fit: cover; /* Maintain image ratio, crop if necessary */
     }
     .card {
-        height: 100%; /* Giữ thẻ card đều nhau nếu cần */
+        height: 100%; /* Make card height uniform if needed */
     }
 </style>
 
 <div class="container mt-5">
-    <h2 class="mb-4">Sản phẩm đã thích</h2>
+    <h2 class="mb-4">Liked Products</h2>
     @if($favorites->isEmpty())
-        <p>Chưa có sản phẩm nào được thêm vào yêu thích.</p>
+        <p>No products have been added to your favorites yet.</p>
     @else
         <div class="row">
             @foreach($favorites as $product)

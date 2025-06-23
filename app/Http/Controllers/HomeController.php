@@ -13,44 +13,41 @@ class HomeController extends Controller
     public function index(){
         $data = DB::table('products')->get();
         $cart = Cart::content();
-        return view('user.index',['products' => $data],['cart' => $cart]);
+        return view('user.index', ['products' => $data], ['cart' => $cart]);
     }
 
     public function addToCart(Request $request, $id)
-{
-    $guard = session('guard', 'web');          // 'web' hoặc 'member'
+    {
+        $guard = session('guard', 'web');  // 'web' or 'member'
 
-    if (!Auth::guard($guard)->check()) {
-        return redirect()
-               ->route('login')
-               ->with('error', 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!');
+        if (!Auth::guard($guard)->check()) {
+            return redirect()
+                   ->route('login')
+                   ->with('error', 'You need to log in to add products to the cart!');
+        }
+
+        $product = DB::table('products')->find($id);
+
+        if (!$product) {
+            return redirect()->route('cart')->with('error', 'Product does not exist!');
+        }
+
+        $quantity = max(1, (int) $request->input('quantity', 1));
+
+        Cart::add([
+            'id'     => $id,
+            'name'   => $product->name,
+            'qty'    => $quantity,
+            'price'  => $product->price,
+            'weight' => 0,
+        ]);
+
+        return redirect()->route('user.cart')->with('success', 'Added to cart!');
     }
-
-    $product = DB::table('products')->find($id);
-
-    if (!$product) {
-        return redirect()->route('cart')->with('error', 'Sản phẩm không tồn tại!');
-    }
-
-    $quantity = max(1, (int) $request->input('quantity', 1));
-
-    Cart::add([
-        'id'     => $id,
-        'name'   => $product->name,
-        'qty'    => $quantity,
-        'price'  => $product->price,
-        'weight' => 0,
-    ]);
-
-    return redirect()->route('user.cart')->with('success', 'Đã thêm vào giỏ hàng!');
-}
-
-
-
 
     public function cart(){
         $cart = Cart::content();
-        return view('user.cart',['cart' => $cart]);
+        return view('user.cart', ['cart' => $cart]);
     }
 
     public function deleteCart($rowId){

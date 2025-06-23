@@ -2,84 +2,77 @@
 @section('content')
     <!-- Slider -->
     @include('user.blocks.slider')
-    <!-- Banner -->
 
+    <!-- Banner -->
     @include('user.blocks.banner')
 
     <!-- New Arrivals -->
-
     @include('user.blocks.new_arrival')
 
     <!-- Deal of the week -->
-
     {{-- @include('user.blocks.deal_ofthe_week') --}}
 
     <!-- Best Sellers -->
-
     @include('user.blocks.best_seller')
 
-    <!-- Benefit -->
-
+    <!-- Benefits -->
     @include('user.blocks.benefit')
 
     <!-- Blogs -->
-
     @include('user.blocks.blogs')
 
     <!-- Newsletter -->
-
     @include('user.blocks.newsletter')
 
     <!-- Footer -->
-
     @include('user.blocks.footer')
+
     <style>
-.compare-box {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    border-top: 2px solid #ccc;
-    padding: 8px 10px;
-    z-index: 9999;
-}
+        .compare-box {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 2px solid #ccc;
+            padding: 8px 10px;
+            z-index: 9999;
+        }
 
-.compare-box .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
-}
+        .compare-box .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0;
+        }
 
-.compare-box .d-flex {
-    gap: 5px;
-}
+        .compare-box .d-flex {
+            gap: 5px;
+        }
 
-.compare-box .product-item {
-    width: 90px;
-    text-align: center;
-    margin: 0;
-    height: 120px;
-    position: relative;
-}
+        .compare-box .product-item {
+            width: 90px;
+            text-align: center;
+            margin: 0;
+            height: 120px;
+            position: relative;
+        }
 
-.compare-box img {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
+        .compare-box img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
 
-.compare-box .product-name {
-    font-size: 12px;
-    margin-top: 5px;
-    white-space: normal;
-    overflow: unset;
-}
-</style>
-
+        .compare-box .product-name {
+            font-size: 12px;
+            margin-top: 5px;
+            white-space: normal;
+            overflow: unset;
+        }
+    </style>
 
     @if(session('compare') && count(session('compare')) > 0)
         @php
@@ -94,7 +87,6 @@
                     ->whereIn('products.id', $compareIds)
                     ->get()
                 : collect();
-                // dd(session('compare'));
         @endphp
 
         @if($compareCount > 0)
@@ -115,7 +107,7 @@
                             </div>
                         @endforeach
                     </div>
-                    <a href="{{ route('user.compare') }}" class="btn btn-primary btn-sm">So sánh ({{ $compareCount }})</a>
+                    <a href="{{ route('user.compare') }}" class="btn btn-primary btn-sm">Compare ({{ $compareCount }})</a>
                 </div>
             </div>
         @endif

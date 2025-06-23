@@ -9,36 +9,40 @@ use App\Models\Member;
 
 class LoginController extends Controller
 {
-    /* ---------- FORM ---------- */
-    public function getLogin() { return view('auth.login'); }
+    /* ---------- SHOW LOGIN FORM ---------- */
+    public function getLogin() {
+        return view('auth.login');
+    }
 
-    /* ---------- LOGIN ---------- */
+    /* ---------- HANDLE LOGIN ---------- */
     public function postLogin(Request $request)
     {
-        // validate trước
+        // Validate credentials
         $credentials = $request->validate([
             'email'    => 'required|email',
             'password' => 'required|string',
         ]);
 
-        // Thử các guard theo thứ tự
+        // Try each guard in order
         foreach (['web' => User::class, 'member' => Member::class] as $guard => $model) {
             if (Auth::guard($guard)->attempt($credentials, $request->filled('remember'))) {
-                // login OK
+                // Login successful
                 session(['guard' => $guard]);
 
                 $user = Auth::guard($guard)->user();
                 return $user->level == 1
-                       ? redirect()->route('admin.member.index')
-                       : redirect()->intended(route('index'));
+                    ? redirect()->route('admin.dashboard')
+                    : redirect()->intended(route('index'));
             }
         }
 
-        return back()->with('error', 'Email hoặc mật khẩu không đúng.');
+        return back()->with('error', 'Incorrect email or password.');
     }
 
-    /* ---------- REGISTER (user => guard web) ---------- */
-    public function getRegister() { return view('auth.register'); }
+    /* ---------- SHOW REGISTER FORM (user => web guard) ---------- */
+    public function getRegister() {
+        return view('auth.register');
+    }
 
     public function postRegister(Request $request)
     {
@@ -56,10 +60,10 @@ class LoginController extends Controller
         ]);
 
         return redirect()->route('login')
-                         ->with('success', 'Đăng ký thành công! Hãy đăng nhập.');
+                         ->with('success', 'Registration successful! Please log in.');
     }
 
-    /* ---------- LOGOUT ---------- */
+    /* ---------- HANDLE LOGOUT ---------- */
     public function logout()
     {
         $guard = session('guard', 'web');

@@ -98,11 +98,6 @@
                                                     <td>{{$loop->iteration}}</td>
                                                     <td>{{$item->name}}</td>
                                                     <td>${{number_format($item->price,0,"",".") }}</td>
-                                                    {{-- <td>
-                                                        <span class="input-group-text btn btn-danger" onclick="this.parentNode.querySelector('input[type=number]').stepDown()"> -     </span>
-                                                        <input type="number" value="{{$item->qty}}" class="form-control text-center" min="1" max="100" name="qty[]">
-                                                        <span class="input-group-text btn btn-success" onclick="this.parentNode.querySelector('input[type=number]').stepUp()"> +    </span></td>
-                                                    </td> --}}
                                                     <td>{{$item->qty}}</td>
                                                     <td>${{number_format($item->price * $item->qty,0,"",".") }}</td>
                                                     <td><a href="{{ route('user.deleteCart',['id' => $item -> rowId]) }}"><i class="fa fa-remove"></i></a></td>

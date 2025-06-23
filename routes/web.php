@@ -67,6 +67,7 @@ Route::prefix('user')->name('user.')->group(function () {
     Route::get('contact', [UserController::class, 'contact'])->name('contact');
     Route::post('contact', [UserController::class, 'contactPost'])->name('contact.post');
 
+
     // Product Comparison
     Route::post('/add-compare/{id}', [UserController::class, 'addCompare'])->name('add_compare');
     Route::delete('/remove-compare/{id}', [UserController::class, 'removeCompare'])->name('remove_compare');
@@ -80,6 +81,9 @@ Route::prefix('user')->name('user.')->group(function () {
 */
 Route::prefix('admin')->middleware('admin.access')->name('admin.')->group(function () {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('contact/read/{id}', [AdminController::class, 'readContact'])->name('contact.read');
+    Route::get('contact', [AdminController::class, 'contactIndex'])->name('contact.index');
+
 
     // Members
     Route::prefix('member')->name('member.')->group(function () {
@@ -115,11 +119,4 @@ Route::prefix('admin')->middleware('admin.access')->name('admin.')->group(functi
     Route::get('cart', [AdminController::class, 'cart'])->name('cart');
     Route::get('success/{id}', [AdminController::class, 'success'])->name('success');
     Route::get('cancel/{id}', [AdminController::class, 'cancel'])->name('cancel');
-});
-
-Route::get('/fix-compare', function () {
-    $compareIds = session('compare', []);
-    $compareIds = array_filter($compareIds, fn($item) => $item != "31");
-    session(['compare' => $compareIds]);
-    return 'Đã xóa sản phẩm ID 15 khỏi session compare.';
 });
